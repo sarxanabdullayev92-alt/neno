@@ -1,0 +1,352 @@
+import 'package:flutter/material.dart';
+import 'flutter_flow/request_manager.dart';
+import '/backend/schema/structs/index.dart';
+import '/backend/schema/enums/enums.dart';
+import '/backend/api_requests/api_manager.dart';
+import 'backend/supabase/supabase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'flutter_flow/flutter_flow_util.dart';
+
+class FFAppState extends ChangeNotifier {
+  static FFAppState _instance = FFAppState._internal();
+
+  factory FFAppState() {
+    return _instance;
+  }
+
+  FFAppState._internal();
+
+  static void reset() {
+    _instance = FFAppState._internal();
+  }
+
+  Future initializePersistedState() async {
+    prefs = await SharedPreferences.getInstance();
+    _safeInit(() {
+      _WhatProduct = prefs.getString('ff_WhatProduct') ?? _WhatProduct;
+    });
+    _safeInit(() {
+      _comment = prefs.getString('ff_comment') ?? _comment;
+    });
+    _safeInit(() {
+      _nameOfThirdParty =
+          prefs.getString('ff_nameOfThirdParty') ?? _nameOfThirdParty;
+    });
+    _safeInit(() {
+      _NumberOfThirdParty =
+          prefs.getString('ff_NumberOfThirdParty') ?? _NumberOfThirdParty;
+    });
+    _safeInit(() {
+      _datePicked = prefs.containsKey('ff_datePicked')
+          ? DateTime.fromMillisecondsSinceEpoch(prefs.getInt('ff_datePicked')!)
+          : _datePicked;
+    });
+    _safeInit(() {
+      _aFutureOrder = prefs.getBool('ff_aFutureOrder') ?? _aFutureOrder;
+    });
+    _safeInit(() {
+      _whatProductList =
+          prefs.getStringList('ff_whatProductList') ?? _whatProductList;
+    });
+    _safeInit(() {
+      _TheProductList = prefs
+              .getStringList('ff_TheProductList')
+              ?.map((x) {
+                try {
+                  return NumberAndPricesStruct.fromSerializableMap(
+                      jsonDecode(x));
+                } catch (e) {
+                  print("Can't decode persisted data type. Error: $e.");
+                  return null;
+                }
+              })
+              .withoutNulls
+              .toList() ??
+          _TheProductList;
+    });
+    _safeInit(() {
+      _city = prefs.getString('ff_city') ?? _city;
+    });
+    _safeInit(() {
+      _orderLat = prefs.getDouble('ff_orderLat') ?? _orderLat;
+    });
+    _safeInit(() {
+      _orderLng = prefs.getDouble('ff_orderLng') ?? _orderLng;
+    });
+    _safeInit(() {
+      _orderAddress = prefs.getString('ff_orderAddress') ?? _orderAddress;
+    });
+    _safeInit(() {
+      _activeOrderId = prefs.getInt('ff_activeOrderId') ?? _activeOrderId;
+    });
+    _safeInit(() {
+      _activeMasterId = prefs.getInt('ff_activeMasterId') ?? _activeMasterId;
+    });
+  }
+
+  void update(VoidCallback callback) {
+    callback();
+    notifyListeners();
+  }
+
+  late SharedPreferences prefs;
+
+  String _WhatProduct = '';
+  String get WhatProduct => _WhatProduct;
+  set WhatProduct(String value) {
+    _WhatProduct = value;
+    prefs.setString('ff_WhatProduct', value);
+  }
+
+  List<String> _imagesForTheOrder = [];
+  List<String> get imagesForTheOrder => _imagesForTheOrder;
+  set imagesForTheOrder(List<String> value) {
+    _imagesForTheOrder = value;
+  }
+
+  void addToImagesForTheOrder(String value) {
+    imagesForTheOrder.add(value);
+  }
+
+  void removeFromImagesForTheOrder(String value) {
+    imagesForTheOrder.remove(value);
+  }
+
+  void removeAtIndexFromImagesForTheOrder(int index) {
+    imagesForTheOrder.removeAt(index);
+  }
+
+  void updateImagesForTheOrderAtIndex(
+    int index,
+    String Function(String) updateFn,
+  ) {
+    imagesForTheOrder[index] = updateFn(_imagesForTheOrder[index]);
+  }
+
+  void insertAtIndexInImagesForTheOrder(int index, String value) {
+    imagesForTheOrder.insert(index, value);
+  }
+
+  String _comment = '';
+  String get comment => _comment;
+  set comment(String value) {
+    _comment = value;
+    prefs.setString('ff_comment', value);
+  }
+
+  String _nameOfThirdParty = '';
+  String get nameOfThirdParty => _nameOfThirdParty;
+  set nameOfThirdParty(String value) {
+    _nameOfThirdParty = value;
+    prefs.setString('ff_nameOfThirdParty', value);
+  }
+
+  String _NumberOfThirdParty = '';
+  String get NumberOfThirdParty => _NumberOfThirdParty;
+  set NumberOfThirdParty(String value) {
+    _NumberOfThirdParty = value;
+    prefs.setString('ff_NumberOfThirdParty', value);
+  }
+
+  DateTime? _datePicked;
+  DateTime? get datePicked => _datePicked;
+  set datePicked(DateTime? value) {
+    _datePicked = value;
+    value != null
+        ? prefs.setInt('ff_datePicked', value.millisecondsSinceEpoch)
+        : prefs.remove('ff_datePicked');
+  }
+
+  bool _aFutureOrder = false;
+  bool get aFutureOrder => _aFutureOrder;
+  set aFutureOrder(bool value) {
+    _aFutureOrder = value;
+    prefs.setBool('ff_aFutureOrder', value);
+  }
+
+  List<String> _generalListOfService = ['nothing'];
+  List<String> get generalListOfService => _generalListOfService;
+  set generalListOfService(List<String> value) {
+    _generalListOfService = value;
+  }
+
+  void addToGeneralListOfService(String value) {
+    generalListOfService.add(value);
+  }
+
+  void removeFromGeneralListOfService(String value) {
+    generalListOfService.remove(value);
+  }
+
+  void removeAtIndexFromGeneralListOfService(int index) {
+    generalListOfService.removeAt(index);
+  }
+
+  void updateGeneralListOfServiceAtIndex(
+    int index,
+    String Function(String) updateFn,
+  ) {
+    generalListOfService[index] = updateFn(_generalListOfService[index]);
+  }
+
+  void insertAtIndexInGeneralListOfService(int index, String value) {
+    generalListOfService.insert(index, value);
+  }
+
+  List<String> _whatProductList = [];
+  List<String> get whatProductList => _whatProductList;
+  set whatProductList(List<String> value) {
+    _whatProductList = value;
+    prefs.setStringList('ff_whatProductList', value);
+  }
+
+  void addToWhatProductList(String value) {
+    whatProductList.add(value);
+    prefs.setStringList('ff_whatProductList', _whatProductList);
+  }
+
+  void removeFromWhatProductList(String value) {
+    whatProductList.remove(value);
+    prefs.setStringList('ff_whatProductList', _whatProductList);
+  }
+
+  void removeAtIndexFromWhatProductList(int index) {
+    whatProductList.removeAt(index);
+    prefs.setStringList('ff_whatProductList', _whatProductList);
+  }
+
+  void updateWhatProductListAtIndex(
+    int index,
+    String Function(String) updateFn,
+  ) {
+    whatProductList[index] = updateFn(_whatProductList[index]);
+    prefs.setStringList('ff_whatProductList', _whatProductList);
+  }
+
+  void insertAtIndexInWhatProductList(int index, String value) {
+    whatProductList.insert(index, value);
+    prefs.setStringList('ff_whatProductList', _whatProductList);
+  }
+
+  List<NumberAndPricesStruct> _TheProductList = [];
+  List<NumberAndPricesStruct> get TheProductList => _TheProductList;
+  set TheProductList(List<NumberAndPricesStruct> value) {
+    _TheProductList = value;
+    prefs.setStringList(
+        'ff_TheProductList', value.map((x) => x.serialize()).toList());
+  }
+
+  void addToTheProductList(NumberAndPricesStruct value) {
+    TheProductList.add(value);
+    prefs.setStringList('ff_TheProductList',
+        _TheProductList.map((x) => x.serialize()).toList());
+  }
+
+  void removeFromTheProductList(NumberAndPricesStruct value) {
+    TheProductList.remove(value);
+    prefs.setStringList('ff_TheProductList',
+        _TheProductList.map((x) => x.serialize()).toList());
+  }
+
+  void removeAtIndexFromTheProductList(int index) {
+    TheProductList.removeAt(index);
+    prefs.setStringList('ff_TheProductList',
+        _TheProductList.map((x) => x.serialize()).toList());
+  }
+
+  void updateTheProductListAtIndex(
+    int index,
+    NumberAndPricesStruct Function(NumberAndPricesStruct) updateFn,
+  ) {
+    TheProductList[index] = updateFn(_TheProductList[index]);
+    prefs.setStringList('ff_TheProductList',
+        _TheProductList.map((x) => x.serialize()).toList());
+  }
+
+  void insertAtIndexInTheProductList(int index, NumberAndPricesStruct value) {
+    TheProductList.insert(index, value);
+    prefs.setStringList('ff_TheProductList',
+        _TheProductList.map((x) => x.serialize()).toList());
+  }
+
+  String _city = 'Москва';
+  String get city => _city;
+  set city(String value) {
+    _city = value;
+    prefs.setString('ff_city', value);
+  }
+
+  double _myLat = 0.0;
+  double get myLat => _myLat;
+  set myLat(double value) {
+    _myLat = value;
+  }
+
+  double _myLng = 0.0;
+  double get myLng => _myLng;
+  set myLng(double value) {
+    _myLng = value;
+  }
+
+  double _orderLat = 0.0;
+  double get orderLat => _orderLat;
+  set orderLat(double value) {
+    _orderLat = value;
+    prefs.setDouble('ff_orderLat', value);
+  }
+
+  double _orderLng = 0.0;
+  double get orderLng => _orderLng;
+  set orderLng(double value) {
+    _orderLng = value;
+    prefs.setDouble('ff_orderLng', value);
+  }
+
+  String _orderAddress = '';
+  String get orderAddress => _orderAddress;
+  set orderAddress(String value) {
+    _orderAddress = value;
+    prefs.setString('ff_orderAddress', value);
+  }
+
+  int _activeOrderId = 0;
+  int get activeOrderId => _activeOrderId;
+  set activeOrderId(int value) {
+    _activeOrderId = value;
+    prefs.setInt('ff_activeOrderId', value);
+  }
+
+  int _activeMasterId = 0;
+  int get activeMasterId => _activeMasterId;
+  set activeMasterId(int value) {
+    _activeMasterId = value;
+    prefs.setInt('ff_activeMasterId', value);
+  }
+
+  final _mappageServiceQueryManager = FutureRequestManager<List<ServicesRow>>();
+  Future<List<ServicesRow>> mappageServiceQuery({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Future<List<ServicesRow>> Function() requestFn,
+  }) =>
+      _mappageServiceQueryManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearMappageServiceQueryCache() => _mappageServiceQueryManager.clear();
+  void clearMappageServiceQueryCacheKey(String? uniqueKey) =>
+      _mappageServiceQueryManager.clearRequest(uniqueKey);
+}
+
+void _safeInit(Function() initializeField) {
+  try {
+    initializeField();
+  } catch (_) {}
+}
+
+Future _safeInitAsync(Function() initializeField) async {
+  try {
+    await initializeField();
+  } catch (_) {}
+}

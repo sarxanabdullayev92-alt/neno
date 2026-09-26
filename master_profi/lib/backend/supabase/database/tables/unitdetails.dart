@@ -1,0 +1,31 @@
+import '../database.dart';
+
+class UnitdetailsTable extends SupabaseTable<UnitdetailsRow> {
+  @override
+  String get tableName => 'unitdetails';
+
+  @override
+  UnitdetailsRow createRow(Map<String, dynamic> data) => UnitdetailsRow(data);
+}
+
+class UnitdetailsRow extends SupabaseDataRow {
+  UnitdetailsRow(Map<String, dynamic> data) : super(data);
+
+  @override
+  SupabaseTable get table => UnitdetailsTable();
+
+  int get id => getField<int>('id')!;
+  set id(int value) => setField<int>('id', value);
+
+  DateTime get createdAt => getField<DateTime>('created_at')!;
+  set createdAt(DateTime value) => setField<DateTime>('created_at', value);
+
+  String? get unitMeasure => getField<String>('unitMeasure');
+  set unitMeasure(String? value) => setField<String>('unitMeasure', value);
+
+  double? get price => getField<double>('price');
+  set price(double? value) => setField<double>('price', value);
+
+  int? get quantity => getField<int>('quantity');
+  set quantity(int? value) => setField<int>('quantity', value);
+}
