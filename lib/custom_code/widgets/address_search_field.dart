@@ -258,6 +258,11 @@ class _AddressSearchFieldState extends State<AddressSearchField> {
               onTap: () {
                 if (_items.isNotEmpty) _overlay.show();
               },
+              // В браузере поле само теряет фокус при нажатии мимо него —
+              // в том числе на строку списка, и список пропадал раньше,
+              // чем срабатывал выбор. Нажатия снаружи обрабатывает TapRegion
+              // выше, он знает, что список — часть поля.
+              onTapOutside: (_) {},
               textInputAction: TextInputAction.search,
               style: theme.textTheme.bodyMedium,
               decoration: InputDecoration(
