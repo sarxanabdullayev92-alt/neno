@@ -1164,7 +1164,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             ),
                             tileColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            activeColor: FlutterFlowTheme.of(context).tertiary,
+                            activeThumbColor:
+                                FlutterFlowTheme.of(context).tertiary,
                             activeTrackColor:
                                 FlutterFlowTheme.of(context).tertiary,
                             dense: false,
@@ -1214,7 +1215,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             ),
                             tileColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            activeColor: FlutterFlowTheme.of(context).tertiary,
+                            activeThumbColor:
+                                FlutterFlowTheme.of(context).tertiary,
                             activeTrackColor:
                                 FlutterFlowTheme.of(context).tertiary,
                             dense: false,
@@ -1264,7 +1266,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             ),
                             tileColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            activeColor: FlutterFlowTheme.of(context).tertiary,
+                            activeThumbColor:
+                                FlutterFlowTheme.of(context).tertiary,
                             activeTrackColor:
                                 FlutterFlowTheme.of(context).tertiary,
                             dense: false,
@@ -1342,7 +1345,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             ),
                             tileColor: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            activeColor: FlutterFlowTheme.of(context).tertiary,
+                            activeThumbColor:
+                                FlutterFlowTheme.of(context).tertiary,
                             activeTrackColor:
                                 FlutterFlowTheme.of(context).tertiary,
                             dense: false,

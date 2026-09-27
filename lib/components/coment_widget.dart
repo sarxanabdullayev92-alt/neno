@@ -469,12 +469,12 @@ class _ComentWidgetState extends State<ComentWidget> {
                           highlightColor: Colors.transparent,
                           onTap: () async {
                             safeSetState(() {
-                              _model.isDataUploading_uploadDataR5rn = false;
-                              _model.uploadedLocalFile_uploadDataR5rn =
+                              _model.isDataUploading_uploadDataR5ry = false;
+                              _model.uploadedLocalFile_uploadDataR5ry =
                                   FFUploadedFile(
                                       bytes: Uint8List.fromList([]),
                                       originalFilename: '');
-                              _model.uploadedFileUrl_uploadDataR5rn = '';
+                              _model.uploadedFileUrl_uploadDataR5ry = '';
                             });
                           },
                           child: Icon(
@@ -617,12 +617,12 @@ class _ComentWidgetState extends State<ComentWidget> {
                           highlightColor: Colors.transparent,
                           onTap: () async {
                             safeSetState(() {
-                              _model.isDataUploading_uploadDataR5ry = false;
-                              _model.uploadedLocalFile_uploadDataR5ry =
+                              _model.isDataUploading_uploadDataR5rn = false;
+                              _model.uploadedLocalFile_uploadDataR5rn =
                                   FFUploadedFile(
                                       bytes: Uint8List.fromList([]),
                                       originalFilename: '');
-                              _model.uploadedFileUrl_uploadDataR5ry = '';
+                              _model.uploadedFileUrl_uploadDataR5rn = '';
                             });
                           },
                           child: Icon(
@@ -670,16 +670,8 @@ class _ComentWidgetState extends State<ComentWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 1.0, 0.0, 5.0),
                     child: FFButtonWidget(
-                      onPressed: () async {
-                        FFAppState().addToImagesForTheOrder(
-                            _model.uploadedFileUrl_uploadDataR5r);
-                        safeSetState(() {});
-                        FFAppState().addToImagesForTheOrder(
-                            _model.uploadedFileUrl_uploadDataR5ry);
-                        safeSetState(() {});
-                        FFAppState().addToImagesForTheOrder(
-                            _model.uploadedFileUrl_uploadDataR5rn);
-                        safeSetState(() {});
+                      onPressed: () {
+                        print('Button pressed ...');
                       },
                       text: 'Сохранить',
                       options: FFButtonOptions(

@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
+import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,12 @@ import 'curtains_model.dart';
 export 'curtains_model.dart';
 
 class CurtainsWidget extends StatefulWidget {
-  const CurtainsWidget({super.key});
+  const CurtainsWidget({
+    super.key,
+    this.productType,
+  });
+
+  final String? productType;
 
   @override
   State<CurtainsWidget> createState() => _CurtainsWidgetState();
@@ -40,6 +46,8 @@ class _CurtainsWidgetState extends State<CurtainsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       height: 363.9,
       decoration: BoxDecoration(
@@ -214,7 +222,18 @@ class _CurtainsWidgetState extends State<CurtainsWidget> {
                                         .fontStyle,
                                   ),
                         ),
-                        count: _model.countControllerValue1 ??= 0,
+                        count: _model.countControllerValue1 ??=
+                            valueOrDefault<int>(
+                          FFAppState()
+                              .TheProductList
+                              .where((e) =>
+                                  (e.productType == widget!.productType) &&
+                                  (e.measurement == 'Штора(синтетика)'))
+                              .toList()
+                              .firstOrNull
+                              ?.quantity,
+                          0,
+                        ),
                         updateCount: (count) => safeSetState(
                             () => _model.countControllerValue1 = count),
                         stepSize: 1,
@@ -336,7 +355,18 @@ class _CurtainsWidgetState extends State<CurtainsWidget> {
                                         .fontStyle,
                                   ),
                         ),
-                        count: _model.countControllerValue2 ??= 0,
+                        count: _model.countControllerValue2 ??=
+                            valueOrDefault<int>(
+                          FFAppState()
+                              .TheProductList
+                              .where((e) =>
+                                  (e.productType == widget!.productType) &&
+                                  (e.measurement == 'Штора(натуральная ткань)'))
+                              .toList()
+                              .firstOrNull
+                              ?.quantity,
+                          0,
+                        ),
                         updateCount: (count) => safeSetState(
                             () => _model.countControllerValue2 = count),
                         stepSize: 1,
@@ -458,7 +488,18 @@ class _CurtainsWidgetState extends State<CurtainsWidget> {
                                         .fontStyle,
                                   ),
                         ),
-                        count: _model.countControllerValue3 ??= 0,
+                        count: _model.countControllerValue3 ??=
+                            valueOrDefault<int>(
+                          FFAppState()
+                              .TheProductList
+                              .where((e) =>
+                                  (e.productType == widget!.productType) &&
+                                  (e.measurement == 'Штора с подкладом'))
+                              .toList()
+                              .firstOrNull
+                              ?.quantity,
+                          0,
+                        ),
                         updateCount: (count) => safeSetState(
                             () => _model.countControllerValue3 = count),
                         stepSize: 1,
@@ -475,7 +516,67 @@ class _CurtainsWidgetState extends State<CurtainsWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 1.0, 0.0, 5.0),
                     child: FFButtonWidget(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        if (_model.countControllerValue1 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Штора(синтетика)',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Штора(синтетика)',
+                            _model.first,
+                            _model.countControllerValue1,
+                          );
+                        }
+
+                        if (_model.countControllerValue2 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Штора(натуральная ткань)',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Штора(натуральная ткань)',
+                            _model.two,
+                            _model.countControllerValue2,
+                          );
+                        }
+
+                        if (_model.countControllerValue3 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Штора с подкладом',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Штора с подкладом',
+                            _model.tree,
+                            _model.countControllerValue3,
+                          );
+                        }
+
+                        _model.productGot = await actions.getAllProductTypes();
+                        _model.productNameList =
+                            await actions.getAllProductNames();
+                        FFAppState().productTypeList =
+                            _model.productGot!.toList().cast<String>();
+                        FFAppState().ProductNameALone =
+                            _model.productNameList!.toList().cast<String>();
+                        safeSetState(() {});
+                        Navigator.pop(context);
+
+                        safeSetState(() {});
+                      },
                       text: 'Сохранить',
                       options: FFButtonOptions(
                         width: 159.1,

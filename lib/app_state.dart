@@ -26,6 +26,30 @@ class FFAppState extends ChangeNotifier {
       _WhatProduct = prefs.getString('ff_WhatProduct') ?? _WhatProduct;
     });
     _safeInit(() {
+      _TheProductList = prefs
+              .getStringList('ff_TheProductList')
+              ?.map((x) {
+                try {
+                  return NumberAndPricesStruct.fromSerializableMap(
+                      jsonDecode(x));
+                } catch (e) {
+                  print("Can't decode persisted data type. Error: $e.");
+                  return null;
+                }
+              })
+              .withoutNulls
+              .toList() ??
+          _TheProductList;
+    });
+    _safeInit(() {
+      _whatProductList =
+          prefs.getStringList('ff_whatProductList') ?? _whatProductList;
+    });
+    _safeInit(() {
+      _productTypeList =
+          prefs.getStringList('ff_productTypeList') ?? _productTypeList;
+    });
+    _safeInit(() {
       _comment = prefs.getString('ff_comment') ?? _comment;
     });
     _safeInit(() {
@@ -43,26 +67,6 @@ class FFAppState extends ChangeNotifier {
     });
     _safeInit(() {
       _aFutureOrder = prefs.getBool('ff_aFutureOrder') ?? _aFutureOrder;
-    });
-    _safeInit(() {
-      _whatProductList =
-          prefs.getStringList('ff_whatProductList') ?? _whatProductList;
-    });
-    _safeInit(() {
-      _TheProductList = prefs
-              .getStringList('ff_TheProductList')
-              ?.map((x) {
-                try {
-                  return NumberAndPricesStruct.fromSerializableMap(
-                      jsonDecode(x));
-                } catch (e) {
-                  print("Can't decode persisted data type. Error: $e.");
-                  return null;
-                }
-              })
-              .withoutNulls
-              .toList() ??
-          _TheProductList;
     });
     _safeInit(() {
       _city = prefs.getString('ff_city') ?? _city;
@@ -98,137 +102,10 @@ class FFAppState extends ChangeNotifier {
     prefs.setString('ff_WhatProduct', value);
   }
 
-  List<String> _imagesForTheOrder = [];
-  List<String> get imagesForTheOrder => _imagesForTheOrder;
-  set imagesForTheOrder(List<String> value) {
-    _imagesForTheOrder = value;
-  }
-
-  void addToImagesForTheOrder(String value) {
-    imagesForTheOrder.add(value);
-  }
-
-  void removeFromImagesForTheOrder(String value) {
-    imagesForTheOrder.remove(value);
-  }
-
-  void removeAtIndexFromImagesForTheOrder(int index) {
-    imagesForTheOrder.removeAt(index);
-  }
-
-  void updateImagesForTheOrderAtIndex(
-    int index,
-    String Function(String) updateFn,
-  ) {
-    imagesForTheOrder[index] = updateFn(_imagesForTheOrder[index]);
-  }
-
-  void insertAtIndexInImagesForTheOrder(int index, String value) {
-    imagesForTheOrder.insert(index, value);
-  }
-
-  String _comment = '';
-  String get comment => _comment;
-  set comment(String value) {
-    _comment = value;
-    prefs.setString('ff_comment', value);
-  }
-
-  String _nameOfThirdParty = '';
-  String get nameOfThirdParty => _nameOfThirdParty;
-  set nameOfThirdParty(String value) {
-    _nameOfThirdParty = value;
-    prefs.setString('ff_nameOfThirdParty', value);
-  }
-
-  String _NumberOfThirdParty = '';
-  String get NumberOfThirdParty => _NumberOfThirdParty;
-  set NumberOfThirdParty(String value) {
-    _NumberOfThirdParty = value;
-    prefs.setString('ff_NumberOfThirdParty', value);
-  }
-
-  DateTime? _datePicked;
-  DateTime? get datePicked => _datePicked;
-  set datePicked(DateTime? value) {
-    _datePicked = value;
-    value != null
-        ? prefs.setInt('ff_datePicked', value.millisecondsSinceEpoch)
-        : prefs.remove('ff_datePicked');
-  }
-
-  bool _aFutureOrder = false;
-  bool get aFutureOrder => _aFutureOrder;
-  set aFutureOrder(bool value) {
-    _aFutureOrder = value;
-    prefs.setBool('ff_aFutureOrder', value);
-  }
-
-  List<String> _generalListOfService = ['nothing'];
-  List<String> get generalListOfService => _generalListOfService;
-  set generalListOfService(List<String> value) {
-    _generalListOfService = value;
-  }
-
-  void addToGeneralListOfService(String value) {
-    generalListOfService.add(value);
-  }
-
-  void removeFromGeneralListOfService(String value) {
-    generalListOfService.remove(value);
-  }
-
-  void removeAtIndexFromGeneralListOfService(int index) {
-    generalListOfService.removeAt(index);
-  }
-
-  void updateGeneralListOfServiceAtIndex(
-    int index,
-    String Function(String) updateFn,
-  ) {
-    generalListOfService[index] = updateFn(_generalListOfService[index]);
-  }
-
-  void insertAtIndexInGeneralListOfService(int index, String value) {
-    generalListOfService.insert(index, value);
-  }
-
-  List<String> _whatProductList = [];
-  List<String> get whatProductList => _whatProductList;
-  set whatProductList(List<String> value) {
-    _whatProductList = value;
-    prefs.setStringList('ff_whatProductList', value);
-  }
-
-  void addToWhatProductList(String value) {
-    whatProductList.add(value);
-    prefs.setStringList('ff_whatProductList', _whatProductList);
-  }
-
-  void removeFromWhatProductList(String value) {
-    whatProductList.remove(value);
-    prefs.setStringList('ff_whatProductList', _whatProductList);
-  }
-
-  void removeAtIndexFromWhatProductList(int index) {
-    whatProductList.removeAt(index);
-    prefs.setStringList('ff_whatProductList', _whatProductList);
-  }
-
-  void updateWhatProductListAtIndex(
-    int index,
-    String Function(String) updateFn,
-  ) {
-    whatProductList[index] = updateFn(_whatProductList[index]);
-    prefs.setStringList('ff_whatProductList', _whatProductList);
-  }
-
-  void insertAtIndexInWhatProductList(int index, String value) {
-    whatProductList.insert(index, value);
-    prefs.setStringList('ff_whatProductList', _whatProductList);
-  }
-
-  List<NumberAndPricesStruct> _TheProductList = [];
+  List<NumberAndPricesStruct> _TheProductList = [
+    NumberAndPricesStruct.fromSerializableMap(jsonDecode(
+        '{\"Quantity\":\"4\",\"costper1\":\"3\",\"measurement\":\"Hello World\",\"productName\":\"Hello World\",\"productType\":\"Hello World\"}'))
+  ];
   List<NumberAndPricesStruct> get TheProductList => _TheProductList;
   set TheProductList(List<NumberAndPricesStruct> value) {
     _TheProductList = value;
@@ -267,6 +144,142 @@ class FFAppState extends ChangeNotifier {
     TheProductList.insert(index, value);
     prefs.setStringList('ff_TheProductList',
         _TheProductList.map((x) => x.serialize()).toList());
+  }
+
+  List<String> _whatProductList = ['Hello World'];
+  List<String> get whatProductList => _whatProductList;
+  set whatProductList(List<String> value) {
+    _whatProductList = value;
+    prefs.setStringList('ff_whatProductList', value);
+  }
+
+  void addToWhatProductList(String value) {
+    whatProductList.add(value);
+    prefs.setStringList('ff_whatProductList', _whatProductList);
+  }
+
+  void removeFromWhatProductList(String value) {
+    whatProductList.remove(value);
+    prefs.setStringList('ff_whatProductList', _whatProductList);
+  }
+
+  void removeAtIndexFromWhatProductList(int index) {
+    whatProductList.removeAt(index);
+    prefs.setStringList('ff_whatProductList', _whatProductList);
+  }
+
+  void updateWhatProductListAtIndex(
+    int index,
+    String Function(String) updateFn,
+  ) {
+    whatProductList[index] = updateFn(_whatProductList[index]);
+    prefs.setStringList('ff_whatProductList', _whatProductList);
+  }
+
+  void insertAtIndexInWhatProductList(int index, String value) {
+    whatProductList.insert(index, value);
+    prefs.setStringList('ff_whatProductList', _whatProductList);
+  }
+
+  List<String> _generalListOfService = ['nothing'];
+  List<String> get generalListOfService => _generalListOfService;
+  set generalListOfService(List<String> value) {
+    _generalListOfService = value;
+  }
+
+  void addToGeneralListOfService(String value) {
+    generalListOfService.add(value);
+  }
+
+  void removeFromGeneralListOfService(String value) {
+    generalListOfService.remove(value);
+  }
+
+  void removeAtIndexFromGeneralListOfService(int index) {
+    generalListOfService.removeAt(index);
+  }
+
+  void updateGeneralListOfServiceAtIndex(
+    int index,
+    String Function(String) updateFn,
+  ) {
+    generalListOfService[index] = updateFn(_generalListOfService[index]);
+  }
+
+  void insertAtIndexInGeneralListOfService(int index, String value) {
+    generalListOfService.insert(index, value);
+  }
+
+  List<String> _productTypeList = ['Hello World'];
+  List<String> get productTypeList => _productTypeList;
+  set productTypeList(List<String> value) {
+    _productTypeList = value;
+    prefs.setStringList('ff_productTypeList', value);
+  }
+
+  void addToProductTypeList(String value) {
+    productTypeList.add(value);
+    prefs.setStringList('ff_productTypeList', _productTypeList);
+  }
+
+  void removeFromProductTypeList(String value) {
+    productTypeList.remove(value);
+    prefs.setStringList('ff_productTypeList', _productTypeList);
+  }
+
+  void removeAtIndexFromProductTypeList(int index) {
+    productTypeList.removeAt(index);
+    prefs.setStringList('ff_productTypeList', _productTypeList);
+  }
+
+  void updateProductTypeListAtIndex(
+    int index,
+    String Function(String) updateFn,
+  ) {
+    productTypeList[index] = updateFn(_productTypeList[index]);
+    prefs.setStringList('ff_productTypeList', _productTypeList);
+  }
+
+  void insertAtIndexInProductTypeList(int index, String value) {
+    productTypeList.insert(index, value);
+    prefs.setStringList('ff_productTypeList', _productTypeList);
+  }
+
+  String _comment = '';
+  String get comment => _comment;
+  set comment(String value) {
+    _comment = value;
+    prefs.setString('ff_comment', value);
+  }
+
+  String _nameOfThirdParty = '';
+  String get nameOfThirdParty => _nameOfThirdParty;
+  set nameOfThirdParty(String value) {
+    _nameOfThirdParty = value;
+    prefs.setString('ff_nameOfThirdParty', value);
+  }
+
+  String _NumberOfThirdParty = '';
+  String get NumberOfThirdParty => _NumberOfThirdParty;
+  set NumberOfThirdParty(String value) {
+    _NumberOfThirdParty = value;
+    prefs.setString('ff_NumberOfThirdParty', value);
+  }
+
+  DateTime? _datePicked;
+  DateTime? get datePicked => _datePicked;
+  set datePicked(DateTime? value) {
+    _datePicked = value;
+    value != null
+        ? prefs.setInt('ff_datePicked', value.millisecondsSinceEpoch)
+        : prefs.remove('ff_datePicked');
+  }
+
+  bool _aFutureOrder = false;
+  bool get aFutureOrder => _aFutureOrder;
+  set aFutureOrder(bool value) {
+    _aFutureOrder = value;
+    prefs.setBool('ff_aFutureOrder', value);
   }
 
   String _city = 'Москва';
@@ -321,6 +334,35 @@ class FFAppState extends ChangeNotifier {
   set activeMasterId(int value) {
     _activeMasterId = value;
     prefs.setInt('ff_activeMasterId', value);
+  }
+
+  List<String> _ProductNameALone = ['Hello World'];
+  List<String> get ProductNameALone => _ProductNameALone;
+  set ProductNameALone(List<String> value) {
+    _ProductNameALone = value;
+  }
+
+  void addToProductNameALone(String value) {
+    ProductNameALone.add(value);
+  }
+
+  void removeFromProductNameALone(String value) {
+    ProductNameALone.remove(value);
+  }
+
+  void removeAtIndexFromProductNameALone(int index) {
+    ProductNameALone.removeAt(index);
+  }
+
+  void updateProductNameALoneAtIndex(
+    int index,
+    String Function(String) updateFn,
+  ) {
+    ProductNameALone[index] = updateFn(_ProductNameALone[index]);
+  }
+
+  void insertAtIndexInProductNameALone(int index, String value) {
+    ProductNameALone.insert(index, value);
   }
 
   final _mappageServiceQueryManager = FutureRequestManager<List<ServicesRow>>();

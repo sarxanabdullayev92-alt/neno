@@ -20,6 +20,15 @@ class ImagesRow extends SupabaseDataRow {
   DateTime get createdAt => getField<DateTime>('created_at')!;
   set createdAt(DateTime value) => setField<DateTime>('created_at', value);
 
-  String? get imageURL => getField<String>('Image_URL');
-  set imageURL(String? value) => setField<String>('Image_URL', value);
+  String? get imageurl1 => getField<String>('Imageurl1');
+  set imageurl1(String? value) => setField<String>('Imageurl1', value);
+
+  String? get orderName => getField<String>('orderName');
+  set orderName(String? value) => setField<String>('orderName', value);
+
+  String? get imageurl2 => getField<String>('imageurl2');
+  set imageurl2(String? value) => setField<String>('imageurl2', value);
+
+  String? get imageUrl3 => getField<String>('imageUrl3');
+  set imageUrl3(String? value) => setField<String>('imageUrl3', value);
 }

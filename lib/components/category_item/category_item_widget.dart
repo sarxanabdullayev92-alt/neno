@@ -14,14 +14,17 @@ class CategoryItemWidget extends StatefulWidget {
     String? imageDesc,
     String? label,
     bool? selected,
+    bool? chosen,
   })  : this.imageDesc =
             imageDesc ?? 'https://dimg.dreamflow.cloud/v1/image/modern%20sofa',
         this.label = label ?? 'Диваны',
-        this.selected = selected ?? true;
+        this.selected = selected ?? true,
+        this.chosen = chosen ?? false;
 
   final String imageDesc;
   final String label;
   final bool selected;
+  final bool chosen;
 
   @override
   State<CategoryItemWidget> createState() => _CategoryItemWidgetState();
@@ -68,12 +71,17 @@ class _CategoryItemWidgetState extends State<CategoryItemWidget> {
         shape: BoxShape.rectangle,
         border: Border.all(
           color: valueOrDefault<Color>(
-            valueOrDefault<bool>(
-              widget!.selected,
-              true,
-            )
-                ? FlutterFlowTheme.of(context).primary
-                : FlutterFlowTheme.of(context).alternate,
+            () {
+              if ((widget!.selected == true) && widget!.chosen) {
+                return Color(0xFFF90000);
+              } else if ((widget!.selected == true) && !widget!.chosen) {
+                return FlutterFlowTheme.of(context).primary;
+              } else if ((widget!.selected == false) && widget!.chosen) {
+                return Color(0xFFFE0B0B);
+              } else {
+                return FlutterFlowTheme.of(context).alternate;
+              }
+            }(),
             FlutterFlowTheme.of(context).primary,
           ),
           width: valueOrDefault<double>(

@@ -1,9 +1,8 @@
 import '/backend/supabase/supabase.dart';
-import '/flutter_flow/flutter_flow_radio_button.dart';
+import '/components/adress_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/form_field_controller.dart';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
@@ -23,19 +22,29 @@ class MapPageModel extends FlutterFlowModel<MapPageWidget> {
 
   double? routeMin;
 
+  double? searchLat;
+
+  double? searchLng;
+
+  bool isSearching = false;
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Custom Action - getMyLocation] action in MapPage widget.
   List<double>? myLocation;
-  // State field(s) for RadioButton widget.
-  FormFieldController<String>? radioButtonValueController;
+  // State field(s) for TextField widget.
+  FocusNode? textFieldFocusNode;
+  TextEditingController? textController;
+  String? Function(BuildContext, String?)? textControllerValidator;
+  // Stores action output result for [Custom Action - geocodeAddress] action in TextField widget.
+  List<double>? geoResult;
 
   @override
   void initState(BuildContext context) {}
 
   @override
-  void dispose() {}
-
-  /// Additional helper methods.
-  String? get radioButtonValue => radioButtonValueController?.value;
+  void dispose() {
+    textFieldFocusNode?.dispose();
+    textController?.dispose();
+  }
 }

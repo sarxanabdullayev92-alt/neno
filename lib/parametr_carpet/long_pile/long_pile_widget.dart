@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
+import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,12 @@ import 'long_pile_model.dart';
 export 'long_pile_model.dart';
 
 class LongPileWidget extends StatefulWidget {
-  const LongPileWidget({super.key});
+  const LongPileWidget({
+    super.key,
+    this.productType,
+  });
+
+  final String? productType;
 
   @override
   State<LongPileWidget> createState() => _LongPileWidgetState();
@@ -40,6 +46,8 @@ class _LongPileWidgetState extends State<LongPileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       height: 363.9,
       decoration: BoxDecoration(
@@ -214,7 +222,18 @@ class _LongPileWidgetState extends State<LongPileWidget> {
                                         .fontStyle,
                                   ),
                         ),
-                        count: _model.countControllerValue ??= 0,
+                        count: _model.countControllerValue ??=
+                            valueOrDefault<int>(
+                          FFAppState()
+                              .TheProductList
+                              .where((e) =>
+                                  (e.productType == widget!.productType) &&
+                                  (e.measurement == 'Длинный ворс/SHAGGY'))
+                              .toList()
+                              .firstOrNull
+                              ?.quantity,
+                          0,
+                        ),
                         updateCount: (count) => safeSetState(
                             () => _model.countControllerValue = count),
                         stepSize: 1,
@@ -232,7 +251,35 @@ class _LongPileWidgetState extends State<LongPileWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 1.0, 0.0, 5.0),
                     child: FFButtonWidget(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        if (_model.countControllerValue == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Длинный ворс/SHAGGY',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Длинный ворс/SHAGGY',
+                            _model.one,
+                            _model.countControllerValue,
+                          );
+                        }
+
+                        _model.productGot = await actions.getAllProductTypes();
+                        _model.productNameList =
+                            await actions.getAllProductNames();
+                        FFAppState().productTypeList =
+                            _model.productGot!.toList().cast<String>();
+                        FFAppState().ProductNameALone =
+                            _model.productNameList!.toList().cast<String>();
+                        safeSetState(() {});
+                        Navigator.pop(context);
+
+                        safeSetState(() {});
+                      },
                       text: 'Сохранить',
                       options: FFButtonOptions(
                         width: 159.1,

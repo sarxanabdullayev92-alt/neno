@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
+import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,12 @@ import 'poof_banquette_model.dart';
 export 'poof_banquette_model.dart';
 
 class PoofBanquetteWidget extends StatefulWidget {
-  const PoofBanquetteWidget({super.key});
+  const PoofBanquetteWidget({
+    super.key,
+    this.productType,
+  });
+
+  final String? productType;
 
   @override
   State<PoofBanquetteWidget> createState() => _PoofBanquetteWidgetState();
@@ -40,6 +46,8 @@ class _PoofBanquetteWidgetState extends State<PoofBanquetteWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       height: 526.5,
       decoration: BoxDecoration(
@@ -109,10 +117,19 @@ class _PoofBanquetteWidgetState extends State<PoofBanquetteWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(
-                      'Пуф/Банкетка 50*50',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            font: GoogleFonts.inter(
+                    Flexible(
+                      child: Text(
+                        'Пуф/Банкетка 50*50',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontWeight,
+                                fontStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontStyle,
+                              ),
+                              letterSpacing: 0.0,
                               fontWeight: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .fontWeight,
@@ -120,14 +137,7 @@ class _PoofBanquetteWidgetState extends State<PoofBanquetteWidget> {
                                   .bodyMedium
                                   .fontStyle,
                             ),
-                            letterSpacing: 0.0,
-                            fontWeight: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .fontWeight,
-                            fontStyle: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .fontStyle,
-                          ),
+                      ),
                     ),
                     Text(
                       'unit',
@@ -149,10 +159,19 @@ class _PoofBanquetteWidgetState extends State<PoofBanquetteWidget> {
                                 .fontStyle,
                           ),
                     ),
-                    Text(
-                      'price',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            font: GoogleFonts.inter(
+                    Flexible(
+                      child: Text(
+                        'price',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontWeight,
+                                fontStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontStyle,
+                              ),
+                              letterSpacing: 0.0,
                               fontWeight: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .fontWeight,
@@ -160,52 +179,38 @@ class _PoofBanquetteWidgetState extends State<PoofBanquetteWidget> {
                                   .bodyMedium
                                   .fontStyle,
                             ),
-                            letterSpacing: 0.0,
-                            fontWeight: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .fontWeight,
-                            fontStyle: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .fontStyle,
-                          ),
-                    ),
-                    Container(
-                      width: 120.0,
-                      height: 40.0,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).alternate,
-                        borderRadius: BorderRadius.circular(8.0),
-                        shape: BoxShape.rectangle,
                       ),
-                      child: FlutterFlowCountController(
-                        decrementIconBuilder: (enabled) => Icon(
-                          Icons.remove_rounded,
-                          color: enabled
-                              ? FlutterFlowTheme.of(context).secondaryText
-                              : FlutterFlowTheme.of(context).alternate,
-                          size: 15.0,
+                    ),
+                    Flexible(
+                      child: Container(
+                        width: 120.0,
+                        height: 40.0,
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).alternate,
+                          borderRadius: BorderRadius.circular(8.0),
+                          shape: BoxShape.rectangle,
                         ),
-                        incrementIconBuilder: (enabled) => Icon(
-                          Icons.add_rounded,
-                          color: enabled
-                              ? FlutterFlowTheme.of(context).warning
-                              : FlutterFlowTheme.of(context).alternate,
-                          size: 15.0,
-                        ),
-                        countBuilder: (count) => Text(
-                          count.toString(),
-                          style:
-                              FlutterFlowTheme.of(context).titleLarge.override(
-                                    font: GoogleFonts.manrope(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .titleLarge
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .titleLarge
-                                          .fontStyle,
-                                    ),
-                                    fontSize: 15.0,
-                                    letterSpacing: 0.0,
+                        child: FlutterFlowCountController(
+                          decrementIconBuilder: (enabled) => Icon(
+                            Icons.remove_rounded,
+                            color: enabled
+                                ? FlutterFlowTheme.of(context).secondaryText
+                                : FlutterFlowTheme.of(context).alternate,
+                            size: 15.0,
+                          ),
+                          incrementIconBuilder: (enabled) => Icon(
+                            Icons.add_rounded,
+                            color: enabled
+                                ? FlutterFlowTheme.of(context).warning
+                                : FlutterFlowTheme.of(context).alternate,
+                            size: 15.0,
+                          ),
+                          countBuilder: (count) => Text(
+                            count.toString(),
+                            style: FlutterFlowTheme.of(context)
+                                .titleLarge
+                                .override(
+                                  font: GoogleFonts.manrope(
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .titleLarge
                                         .fontWeight,
@@ -213,14 +218,35 @@ class _PoofBanquetteWidgetState extends State<PoofBanquetteWidget> {
                                         .titleLarge
                                         .fontStyle,
                                   ),
+                                  fontSize: 15.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .titleLarge
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .titleLarge
+                                      .fontStyle,
+                                ),
+                          ),
+                          count: _model.countControllerValue1 ??=
+                              valueOrDefault<int>(
+                            FFAppState()
+                                .TheProductList
+                                .where((e) =>
+                                    (e.productType == widget!.productType) &&
+                                    (e.measurement == 'Пуф/Банкетка 50*50'))
+                                .toList()
+                                .firstOrNull
+                                ?.quantity,
+                            0,
+                          ),
+                          updateCount: (count) => safeSetState(
+                              () => _model.countControllerValue1 = count),
+                          stepSize: 1,
+                          minimum: 0,
+                          contentPadding: EdgeInsetsDirectional.fromSTEB(
+                              12.0, 0.0, 12.0, 0.0),
                         ),
-                        count: _model.countControllerValue1 ??= 0,
-                        updateCount: (count) => safeSetState(
-                            () => _model.countControllerValue1 = count),
-                        stepSize: 1,
-                        minimum: 0,
-                        contentPadding: EdgeInsetsDirectional.fromSTEB(
-                            12.0, 0.0, 12.0, 0.0),
                       ),
                     ),
                   ],
@@ -232,10 +258,19 @@ class _PoofBanquetteWidgetState extends State<PoofBanquetteWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(
-                      'Пуф/Банкетка 60-100*60-100',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            font: GoogleFonts.inter(
+                    Flexible(
+                      child: Text(
+                        'Пуф/Банкетка 60-100*60-100',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontWeight,
+                                fontStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontStyle,
+                              ),
+                              letterSpacing: 0.0,
                               fontWeight: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .fontWeight,
@@ -243,92 +278,82 @@ class _PoofBanquetteWidgetState extends State<PoofBanquetteWidget> {
                                   .bodyMedium
                                   .fontStyle,
                             ),
-                            letterSpacing: 0.0,
-                            fontWeight: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .fontWeight,
-                            fontStyle: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .fontStyle,
-                          ),
-                    ),
-                    Text(
-                      'unit',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            font: GoogleFonts.inter(
-                              fontWeight: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .fontWeight,
-                              fontStyle: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .fontStyle,
-                            ),
-                            letterSpacing: 0.0,
-                            fontWeight: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .fontWeight,
-                            fontStyle: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .fontStyle,
-                          ),
-                    ),
-                    Text(
-                      'price',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            font: GoogleFonts.inter(
-                              fontWeight: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .fontWeight,
-                              fontStyle: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .fontStyle,
-                            ),
-                            letterSpacing: 0.0,
-                            fontWeight: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .fontWeight,
-                            fontStyle: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .fontStyle,
-                          ),
-                    ),
-                    Container(
-                      width: 120.0,
-                      height: 40.0,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).alternate,
-                        borderRadius: BorderRadius.circular(8.0),
-                        shape: BoxShape.rectangle,
                       ),
-                      child: FlutterFlowCountController(
-                        decrementIconBuilder: (enabled) => Icon(
-                          Icons.remove_rounded,
-                          color: enabled
-                              ? FlutterFlowTheme.of(context).secondaryText
-                              : FlutterFlowTheme.of(context).alternate,
-                          size: 15.0,
+                    ),
+                    Flexible(
+                      child: Text(
+                        'unit',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontWeight,
+                                fontStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontStyle,
+                              ),
+                              letterSpacing: 0.0,
+                              fontWeight: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .fontWeight,
+                              fontStyle: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .fontStyle,
+                            ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Text(
+                        'price',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontWeight,
+                                fontStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontStyle,
+                              ),
+                              letterSpacing: 0.0,
+                              fontWeight: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .fontWeight,
+                              fontStyle: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .fontStyle,
+                            ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Container(
+                        width: 120.0,
+                        height: 40.0,
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).alternate,
+                          borderRadius: BorderRadius.circular(8.0),
+                          shape: BoxShape.rectangle,
                         ),
-                        incrementIconBuilder: (enabled) => Icon(
-                          Icons.add_rounded,
-                          color: enabled
-                              ? FlutterFlowTheme.of(context).warning
-                              : FlutterFlowTheme.of(context).alternate,
-                          size: 15.0,
-                        ),
-                        countBuilder: (count) => Text(
-                          count.toString(),
-                          style:
-                              FlutterFlowTheme.of(context).titleLarge.override(
-                                    font: GoogleFonts.manrope(
-                                      fontWeight: FlutterFlowTheme.of(context)
-                                          .titleLarge
-                                          .fontWeight,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .titleLarge
-                                          .fontStyle,
-                                    ),
-                                    fontSize: 15.0,
-                                    letterSpacing: 0.0,
+                        child: FlutterFlowCountController(
+                          decrementIconBuilder: (enabled) => Icon(
+                            Icons.remove_rounded,
+                            color: enabled
+                                ? FlutterFlowTheme.of(context).secondaryText
+                                : FlutterFlowTheme.of(context).alternate,
+                            size: 15.0,
+                          ),
+                          incrementIconBuilder: (enabled) => Icon(
+                            Icons.add_rounded,
+                            color: enabled
+                                ? FlutterFlowTheme.of(context).warning
+                                : FlutterFlowTheme.of(context).alternate,
+                            size: 15.0,
+                          ),
+                          countBuilder: (count) => Text(
+                            count.toString(),
+                            style: FlutterFlowTheme.of(context)
+                                .titleLarge
+                                .override(
+                                  font: GoogleFonts.manrope(
                                     fontWeight: FlutterFlowTheme.of(context)
                                         .titleLarge
                                         .fontWeight,
@@ -336,14 +361,36 @@ class _PoofBanquetteWidgetState extends State<PoofBanquetteWidget> {
                                         .titleLarge
                                         .fontStyle,
                                   ),
+                                  fontSize: 15.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .titleLarge
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .titleLarge
+                                      .fontStyle,
+                                ),
+                          ),
+                          count: _model.countControllerValue2 ??=
+                              valueOrDefault<int>(
+                            FFAppState()
+                                .TheProductList
+                                .where((e) =>
+                                    (e.productType == widget!.productType) &&
+                                    (e.measurement ==
+                                        'Пуф/Банкетка 60-100*60-100'))
+                                .toList()
+                                .firstOrNull
+                                ?.quantity,
+                            0,
+                          ),
+                          updateCount: (count) => safeSetState(
+                              () => _model.countControllerValue2 = count),
+                          stepSize: 1,
+                          minimum: 0,
+                          contentPadding: EdgeInsetsDirectional.fromSTEB(
+                              12.0, 0.0, 12.0, 0.0),
                         ),
-                        count: _model.countControllerValue2 ??= 0,
-                        updateCount: (count) => safeSetState(
-                            () => _model.countControllerValue2 = count),
-                        stepSize: 1,
-                        minimum: 0,
-                        contentPadding: EdgeInsetsDirectional.fromSTEB(
-                            12.0, 0.0, 12.0, 0.0),
                       ),
                     ),
                   ],
@@ -355,7 +402,49 @@ class _PoofBanquetteWidgetState extends State<PoofBanquetteWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 1.0, 0.0, 5.0),
                     child: FFButtonWidget(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        if (_model.countControllerValue1 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Пуф/Банкетка 50*50',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Пуф/Банкетка 50*50',
+                            _model.one,
+                            _model.countControllerValue1,
+                          );
+                        }
+
+                        if (_model.countControllerValue2 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Пуф/Банкетка 60-100*60-100',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Пуф/Банкетка 60-100*60-100',
+                            _model.two,
+                            _model.countControllerValue2,
+                          );
+                        }
+
+                        _model.productGot = await actions.getAllProductTypes();
+                        FFAppState().productTypeList =
+                            _model.productGot!.toList().cast<String>();
+                        FFAppState().ProductNameALone =
+                            _model.productGot!.toList().cast<String>();
+                        safeSetState(() {});
+                        Navigator.pop(context);
+
+                        safeSetState(() {});
+                      },
                       text: 'Сохранить',
                       options: FFButtonOptions(
                         width: 159.1,

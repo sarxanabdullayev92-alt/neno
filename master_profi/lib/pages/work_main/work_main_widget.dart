@@ -1,3 +1,4 @@
+import '/backend/supabase/supabase.dart';
 import '/components/diagnostic_item/diagnostic_item_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
@@ -38,6 +39,16 @@ class _WorkMainWidgetState extends State<WorkMainWidget> {
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.masterRow = await MastersTable().queryRows(
+        queryFn: (q) => q.eqOrNull(
+          'id',
+          FFAppState().myMasterId,
+        ),
+      );
+      if (_model.masterRow != null && (_model.masterRow)!.isNotEmpty) {
+        FFAppState().city = _model.masterRow!.firstOrNull!.city!;
+        safeSetState(() {});
+      }
       _model.myLocation = await actions.getMyLocation();
       if (_model.myLocation != null && (_model.myLocation)!.isNotEmpty) {
         FFAppState().myLat = (_model.myLocation!.elementAtOrNull(0))!;
@@ -488,7 +499,10 @@ class _WorkMainWidgetState extends State<WorkMainWidget> {
                                                       ),
                                                 ),
                                                 Text(
-                                                  'Москва',
+                                                  valueOrDefault<String>(
+                                                    FFAppState().city,
+                                                    'Москва',
+                                                  ),
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .bodyMedium

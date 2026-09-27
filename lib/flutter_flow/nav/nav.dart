@@ -100,11 +100,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => ProductDetailsWidget(),
         ),
         FFRoute(
-          name: SearchingForAddressWidget.routeName,
-          path: SearchingForAddressWidget.routePath,
-          builder: (context, params) => SearchingForAddressWidget(),
-        ),
-        FFRoute(
           name: VerifyCodeWidget.routeName,
           path: VerifyCodeWidget.routePath,
           builder: (context, params) => VerifyCodeWidget(),

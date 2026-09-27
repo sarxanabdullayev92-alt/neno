@@ -55,8 +55,8 @@ class OrdersRow extends SupabaseDataRow {
   set assignmentStatus(String? value) =>
       setField<String>('assignment_status', value);
 
-  List<int> get orders => getListField<int>('orders');
-  set orders(List<int>? value) => setListField<int>('orders', value);
+  List<int> get services => getListField<int>('services');
+  set services(List<int>? value) => setListField<int>('services', value);
 
   double? get latitude => getField<double>('latitude');
   set latitude(double? value) => setField<double>('latitude', value);
@@ -69,4 +69,7 @@ class OrdersRow extends SupabaseDataRow {
 
   String? get address => getField<String>('address');
   set address(String? value) => setField<String>('address', value);
+
+  bool? get cash => getField<bool>('cash');
+  set cash(bool? value) => setField<bool>('cash', value);
 }

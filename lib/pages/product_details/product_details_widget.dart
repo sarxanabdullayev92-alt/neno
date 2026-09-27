@@ -1,7 +1,8 @@
+import '/auth/supabase_auth/auth_util.dart';
+import '/backend/schema/enums/enums.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/action_row/action_row_widget.dart';
 import '/components/action_row_copy/action_row_copy_widget.dart';
-import '/components/button/button_widget.dart';
 import '/components/category_item/category_item_widget.dart';
 import '/components/coment_widget.dart';
 import '/components/other_people_widget.dart';
@@ -19,6 +20,9 @@ import '/select_options/select_matras_options/select_matras_options_widget.dart'
 import '/select_options/selectsofa_options/selectsofa_options_widget.dart';
 import 'dart:math';
 import 'dart:ui';
+import '/custom_code/actions/index.dart' as actions;
+import '/flutter_flow/custom_functions.dart' as functions;
+import '/index.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -82,7 +86,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
       future: ServicesTable().querySingleRow(
         queryFn: (q) => q.eqOrNull(
           'Name',
-          FFAppState().whatProductList.lastOrNull,
+          FFAppState().WhatProduct,
         ),
       ),
       builder: (context, snapshot) {
@@ -118,244 +122,250 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-            body: Stack(
-              alignment: AlignmentDirectional(-1.0, -1.0),
-              children: [
-                Align(
-                  alignment: AlignmentDirectional(-1.0, -1.0),
-                  child: Container(
-                    child: Padding(
-                      padding: EdgeInsets.all(24.0),
-                      child: Container(
-                        child: FlutterFlowIconButton(
-                          borderRadius: 9999.0,
-                          buttonSize: 40.0,
-                          fillColor:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                          icon: Icon(
-                            Icons.menu_rounded,
-                            color: FlutterFlowTheme.of(context).primaryText,
-                            size: 24.0,
+            body: SafeArea(
+              top: true,
+              child: Stack(
+                alignment: AlignmentDirectional(-1.0, -1.0),
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional(-1.0, -1.0),
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.all(24.0),
+                        child: Container(
+                          child: FlutterFlowIconButton(
+                            borderRadius: 9999.0,
+                            buttonSize: 40.0,
+                            fillColor: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            icon: Icon(
+                              Icons.menu_rounded,
+                              color: FlutterFlowTheme.of(context).primaryText,
+                              size: 24.0,
+                            ),
+                            onPressed: () {
+                              print('IconButton pressed ...');
+                            },
                           ),
-                          onPressed: () {
-                            print('IconButton pressed ...');
-                          },
                         ),
                       ),
                     ),
                   ),
-                ),
-                Align(
-                  alignment: AlignmentDirectional(0.0, 1.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).primaryBackground,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(24.0),
-                        topRight: Radius.circular(24.0),
+                  Align(
+                    alignment: AlignmentDirectional(0.0, 1.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(24.0),
+                          topRight: Radius.circular(24.0),
+                        ),
+                        shape: BoxShape.rectangle,
                       ),
-                      shape: BoxShape.rectangle,
-                    ),
-                    child: SingleChildScrollView(
-                      primary: false,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          InkWell(
-                            splashColor: Colors.transparent,
-                            focusColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () async {
-                              context.safePop();
-                            },
-                            child: Container(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Container(
+                      child: SingleChildScrollView(
+                        primary: false,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                context.safePop();
+                              },
+                              child: Container(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
                                   child: Container(
-                                    alignment: AlignmentDirectional(0.0, 0.0),
                                     child: Container(
-                                      width: 40.0,
-                                      height: 4.0,
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .alternate,
-                                        borderRadius:
-                                            BorderRadius.circular(9999.0),
-                                        shape: BoxShape.rectangle,
+                                      alignment: AlignmentDirectional(0.0, 0.0),
+                                      child: Container(
+                                        width: 40.0,
+                                        height: 4.0,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .alternate,
+                                          borderRadius:
+                                              BorderRadius.circular(9999.0),
+                                          shape: BoxShape.rectangle,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ).animateOnPageLoad(
-                              animationsMap['containerOnPageLoadAnimation']!),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              StreamBuilder<List<ServicesRow>>(
-                                stream: _model.rowSupabaseStream ??= SupaFlow
-                                    .client
-                                    .from("services")
-                                    .stream(primaryKey: ['id']).map((list) =>
-                                        list
-                                            .map((item) => ServicesRow(item))
-                                            .toList()),
-                                builder: (context, snapshot) {
-                                  // Customize what your widget looks like when it's loading.
-                                  if (!snapshot.hasData) {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 50.0,
-                                        height: 50.0,
-                                        child: CircularProgressIndicator(
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                            FlutterFlowTheme.of(context)
-                                                .primary,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                  List<ServicesRow> rowServicesRowList =
-                                      snapshot.data!;
-
-                                  return SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: List.generate(
-                                          rowServicesRowList.length,
-                                          (rowIndex) {
-                                        final rowServicesRow =
-                                            rowServicesRowList[rowIndex];
-                                        return Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  24.0, 0.0, 24.0, 0.0),
-                                          child: Container(
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                InkWell(
-                                                  splashColor:
-                                                      Colors.transparent,
-                                                  focusColor:
-                                                      Colors.transparent,
-                                                  hoverColor:
-                                                      Colors.transparent,
-                                                  highlightColor:
-                                                      Colors.transparent,
-                                                  onTap: () async {
-                                                    FFAppState().WhatProduct =
-                                                        rowServicesRow.name!;
-                                                    safeSetState(() {});
-                                                    if (FFAppState()
-                                                            .whatProductList
-                                                            .contains(
-                                                                rowServicesRow
-                                                                    .name) ==
-                                                        true) {
-                                                      FFAppState()
-                                                          .removeFromWhatProductList(
-                                                              rowServicesRow
-                                                                  .name!);
-                                                      safeSetState(() {});
-                                                    } else {
-                                                      FFAppState()
-                                                          .addToWhatProductList(
-                                                              rowServicesRow
-                                                                  .name!);
-                                                      safeSetState(() {});
-                                                    }
-                                                  },
-                                                  child: CategoryItemWidget(
-                                                    key: Key(
-                                                        'Key33_${rowIndex}_of_${rowServicesRowList.length}'),
-                                                    imageDesc:
-                                                        rowServicesRow.image,
-                                                    label: rowServicesRow.name,
-                                                    selected: FFAppState()
-                                                        .whatProductList
-                                                        .contains(rowServicesRow
-                                                            .name),
-                                                  ),
-                                                ),
-                                              ].divide(SizedBox(width: 16.0)),
+                            ).animateOnPageLoad(
+                                animationsMap['containerOnPageLoadAnimation']!),
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                StreamBuilder<List<ServicesRow>>(
+                                  stream: _model.rowSupabaseStream ??= SupaFlow
+                                      .client
+                                      .from("services")
+                                      .stream(primaryKey: ['id']).map((list) =>
+                                          list
+                                              .map((item) => ServicesRow(item))
+                                              .toList()),
+                                  builder: (context, snapshot) {
+                                    // Customize what your widget looks like when it's loading.
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 50.0,
+                                          height: 50.0,
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              FlutterFlowTheme.of(context)
+                                                  .primary,
                                             ),
                                           ),
-                                        );
-                                      }),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ].divide(SizedBox(height: 16.0)),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
-                              shape: BoxShape.rectangle,
-                            ),
-                            child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 8.0, 0.0, 0.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Container(
-                                    height: 1.0,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .alternate,
-                                      shape: BoxShape.rectangle,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.all(24.0),
-                                    child: Container(
-                                      child: Column(
+                                        ),
+                                      );
+                                    }
+                                    List<ServicesRow> rowServicesRowList =
+                                        snapshot.data!;
+
+                                    return SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                valueOrDefault<String>(
-                                                  productDetailsServicesRow
-                                                      ?.name,
-                                                  'Химчистка Дивана',
-                                                ),
-                                                style: FlutterFlowTheme.of(
-                                                        context)
-                                                    .titleLarge
-                                                    .override(
-                                                      font: GoogleFonts.manrope(
+                                        children: List.generate(
+                                            rowServicesRowList.length,
+                                            (rowIndex) {
+                                          final rowServicesRow =
+                                              rowServicesRowList[rowIndex];
+                                          return Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    24.0, 0.0, 24.0, 0.0),
+                                            child: Container(
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onTap: () async {
+                                                      FFAppState().WhatProduct =
+                                                          rowServicesRow.name!;
+                                                      safeSetState(() {});
+                                                      FFAppState()
+                                                          .addToWhatProductList(
+                                                              rowServicesRow
+                                                                  .name!);
+                                                      safeSetState(() {});
+                                                    },
+                                                    child: CategoryItemWidget(
+                                                      key: Key(
+                                                          'Key33_${rowIndex}_of_${rowServicesRowList.length}'),
+                                                      imageDesc:
+                                                          rowServicesRow.image,
+                                                      label:
+                                                          rowServicesRow.name,
+                                                      selected: FFAppState()
+                                                          .ProductNameALone
+                                                          .contains(
+                                                              rowServicesRow
+                                                                  .name),
+                                                      chosen: FFAppState()
+                                                              .WhatProduct ==
+                                                          rowServicesRow.name,
+                                                    ),
+                                                  ),
+                                                ].divide(SizedBox(width: 16.0)),
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ].divide(SizedBox(height: 16.0)),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                shape: BoxShape.rectangle,
+                              ),
+                              child: Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 8.0, 0.0, 0.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Container(
+                                      height: 1.0,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .alternate,
+                                        shape: BoxShape.rectangle,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(24.0),
+                                      child: Container(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  valueOrDefault<String>(
+                                                    productDetailsServicesRow
+                                                        ?.name,
+                                                    'Химчистка Дивана',
+                                                  ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .titleLarge
+                                                      .override(
+                                                        font:
+                                                            GoogleFonts.manrope(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleLarge
+                                                                  .fontStyle,
+                                                        ),
+                                                        letterSpacing: 0.0,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontStyle:
@@ -363,109 +373,83 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                                                     context)
                                                                 .titleLarge
                                                                 .fontStyle,
+                                                        lineHeight: 1.3,
                                                       ),
-                                                      letterSpacing: 0.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontStyle:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .titleLarge
-                                                              .fontStyle,
-                                                      lineHeight: 1.3,
-                                                    ),
-                                              ),
-                                            ],
-                                          ),
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(16.0),
-                                            child: Container(
-                                              height: 140.0,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(16.0),
-                                                shape: BoxShape.rectangle,
-                                              ),
-                                              child: Image.network(
-                                                productDetailsServicesRow!
-                                                    .image!,
-                                                fit: BoxFit.fitHeight,
-                                                alignment: Alignment(0.0, 0.0),
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            valueOrDefault<String>(
-                                              productDetailsServicesRow
-                                                  ?.descriptions,
-                                              '~',
-                                            ),
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  font: GoogleFonts.inter(
-                                                    fontWeight:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodyMedium
-                                                            .fontWeight,
-                                                    fontStyle:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .bodyMedium
-                                                            .fontStyle,
-                                                  ),
-                                                  letterSpacing: 0.0,
-                                                  fontWeight:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontWeight,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMedium
-                                                          .fontStyle,
                                                 ),
-                                          ),
-                                          InkWell(
-                                            splashColor: Colors.transparent,
-                                            focusColor: Colors.transparent,
-                                            hoverColor: Colors.transparent,
-                                            highlightColor: Colors.transparent,
-                                            onTap: () async {
-                                              if (FFAppState().WhatProduct ==
-                                                  'Химчистка Кожанной мебели') {
-                                                await showModalBottomSheet(
-                                                  isScrollControlled: true,
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  enableDrag: false,
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return GestureDetector(
-                                                      onTap: () {
-                                                        FocusScope.of(context)
-                                                            .unfocus();
-                                                        FocusManager.instance
-                                                            .primaryFocus
-                                                            ?.unfocus();
-                                                      },
-                                                      child: Padding(
-                                                        padding: MediaQuery
-                                                            .viewInsetsOf(
-                                                                context),
-                                                        child:
-                                                            SelectLeatherOptionsWidget(),
+                                              ],
+                                            ),
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(16.0),
+                                              child: Container(
+                                                height: 140.0,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          16.0),
+                                                  shape: BoxShape.rectangle,
+                                                ),
+                                                child: Image.network(
+                                                  productDetailsServicesRow!
+                                                      .image!,
+                                                  fit: BoxFit.fitHeight,
+                                                  alignment:
+                                                      Alignment(0.0, 0.0),
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              valueOrDefault<String>(
+                                                productDetailsServicesRow
+                                                    ?.descriptions,
+                                                '~',
+                                              ),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        font: GoogleFonts.inter(
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyMedium
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyMedium
+                                                                  .fontStyle,
+                                                        ),
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyMedium
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyMedium
+                                                                .fontStyle,
                                                       ),
-                                                    );
-                                                  },
-                                                ).then((value) =>
-                                                    safeSetState(() {}));
-                                              } else {
+                                            ),
+                                            InkWell(
+                                              splashColor: Colors.transparent,
+                                              focusColor: Colors.transparent,
+                                              hoverColor: Colors.transparent,
+                                              highlightColor:
+                                                  Colors.transparent,
+                                              onTap: () async {
+                                                _model.allProductType =
+                                                    await actions
+                                                        .getAllProductTypes();
+                                                FFAppState().productTypeList =
+                                                    _model.allProductType!
+                                                        .toList()
+                                                        .cast<String>();
+                                                safeSetState(() {});
                                                 if (FFAppState().WhatProduct ==
-                                                    'Химчистка Дивана') {
+                                                    'Химчистка Кожанной мебели') {
                                                   await showModalBottomSheet(
                                                     isScrollControlled: true,
                                                     backgroundColor:
@@ -485,8 +469,15 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                                           padding: MediaQuery
                                                               .viewInsetsOf(
                                                                   context),
-                                                          child:
-                                                              SelectsofaOptionsWidget(),
+                                                          child: Container(
+                                                            height: MediaQuery
+                                                                        .sizeOf(
+                                                                            context)
+                                                                    .height *
+                                                                0.7,
+                                                            child:
+                                                                SelectLeatherOptionsWidget(),
+                                                          ),
                                                         ),
                                                       );
                                                     },
@@ -495,7 +486,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                                 } else {
                                                   if (FFAppState()
                                                           .WhatProduct ==
-                                                      'Химчистка Кровати/Матраса') {
+                                                      'Химчистка Дивана') {
                                                     await showModalBottomSheet(
                                                       isScrollControlled: true,
                                                       backgroundColor:
@@ -517,8 +508,18 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                                             padding: MediaQuery
                                                                 .viewInsetsOf(
                                                                     context),
-                                                            child:
-                                                                SelectMatrasOptionsWidget(),
+                                                            child: Container(
+                                                              height: MediaQuery
+                                                                          .sizeOf(
+                                                                              context)
+                                                                      .height *
+                                                                  1.0,
+                                                              child:
+                                                                  SelectsofaOptionsWidget(
+                                                                theList: _model
+                                                                    .allProductType,
+                                                              ),
+                                                            ),
                                                           ),
                                                         );
                                                       },
@@ -527,7 +528,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                                   } else {
                                                     if (FFAppState()
                                                             .WhatProduct ==
-                                                        'Химчистка Стульев/ Кресел') {
+                                                        'Химчистка Кровати/Матраса') {
                                                       await showModalBottomSheet(
                                                         isScrollControlled:
                                                             true,
@@ -550,8 +551,14 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                                               padding: MediaQuery
                                                                   .viewInsetsOf(
                                                                       context),
-                                                              child:
-                                                                  SelectChairOptionsWidget(),
+                                                              child: Container(
+                                                                height: MediaQuery.sizeOf(
+                                                                            context)
+                                                                        .height *
+                                                                    0.7,
+                                                                child:
+                                                                    SelectMatrasOptionsWidget(),
+                                                              ),
                                                             ),
                                                           );
                                                         },
@@ -560,7 +567,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                                     } else {
                                                       if (FFAppState()
                                                               .WhatProduct ==
-                                                          'Химчистка Штор на дому') {
+                                                          'Химчистка Стульев/ Кресел') {
                                                         await showModalBottomSheet(
                                                           isScrollControlled:
                                                               true,
@@ -585,7 +592,14 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                                                     .viewInsetsOf(
                                                                         context),
                                                                 child:
-                                                                    SelectCurtainsOptionsWidget(),
+                                                                    Container(
+                                                                  height: MediaQuery.sizeOf(
+                                                                              context)
+                                                                          .height *
+                                                                      0.7,
+                                                                  child:
+                                                                      SelectChairOptionsWidget(),
+                                                                ),
                                                               ),
                                                             );
                                                           },
@@ -595,7 +609,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                                       } else {
                                                         if (FFAppState()
                                                                 .WhatProduct ==
-                                                            'Химчистка Ковров на дому') {
+                                                            'Химчистка Штор на дому') {
                                                           await showModalBottomSheet(
                                                             isScrollControlled:
                                                                 true,
@@ -620,62 +634,124 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                                                       .viewInsetsOf(
                                                                           context),
                                                                   child:
-                                                                      SelectCarpetOptionsWidget(),
+                                                                      Container(
+                                                                    height:
+                                                                        MediaQuery.sizeOf(context).height *
+                                                                            0.7,
+                                                                    child:
+                                                                        SelectCurtainsOptionsWidget(),
+                                                                  ),
                                                                 ),
                                                               );
                                                             },
                                                           ).then((value) =>
                                                               safeSetState(
                                                                   () {}));
+                                                        } else {
+                                                          if (FFAppState()
+                                                                  .WhatProduct ==
+                                                              'Химчистка Ковров на дому') {
+                                                            await showModalBottomSheet(
+                                                              isScrollControlled:
+                                                                  true,
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              enableDrag: false,
+                                                              context: context,
+                                                              builder:
+                                                                  (context) {
+                                                                return GestureDetector(
+                                                                  onTap: () {
+                                                                    FocusScope.of(
+                                                                            context)
+                                                                        .unfocus();
+                                                                    FocusManager
+                                                                        .instance
+                                                                        .primaryFocus
+                                                                        ?.unfocus();
+                                                                  },
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: MediaQuery
+                                                                        .viewInsetsOf(
+                                                                            context),
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          MediaQuery.sizeOf(context).height *
+                                                                              0.7,
+                                                                      child:
+                                                                          SelectCarpetOptionsWidget(),
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ).then((value) =>
+                                                                safeSetState(
+                                                                    () {}));
+                                                          }
                                                         }
                                                       }
                                                     }
                                                   }
                                                 }
-                                              }
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderRadius:
-                                                    BorderRadius.circular(12.0),
-                                                shape: BoxShape.rectangle,
-                                                border: Border.all(
+
+                                                safeSetState(() {});
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
                                                   color: FlutterFlowTheme.of(
                                                           context)
-                                                      .warning,
+                                                      .secondaryBackground,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0),
+                                                  shape: BoxShape.rectangle,
+                                                  border: Border.all(
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .warning,
+                                                  ),
                                                 ),
-                                              ),
-                                              child: Padding(
-                                                padding: EdgeInsets.all(16.0),
-                                                child: Container(
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Flexible(
-                                                        child: Text(
-                                                          valueOrDefault<
-                                                              String>(
-                                                            productDetailsServicesRow
-                                                                ?.navigationtext,
-                                                            '~',
-                                                          ),
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyLarge
-                                                              .override(
-                                                                font:
-                                                                    GoogleFonts
-                                                                        .inter(
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(16.0),
+                                                  child: Container(
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Flexible(
+                                                          child: Text(
+                                                            valueOrDefault<
+                                                                String>(
+                                                              productDetailsServicesRow
+                                                                  ?.navigationtext,
+                                                              '~',
+                                                            ),
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .bodyLarge
+                                                                .override(
+                                                                  font:
+                                                                      GoogleFonts
+                                                                          .inter(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontStyle: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyLarge
+                                                                        .fontStyle,
+                                                                  ),
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w500,
@@ -683,198 +759,138 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                                                           context)
                                                                       .bodyLarge
                                                                       .fontStyle,
+                                                                  lineHeight:
+                                                                      1.5,
                                                                 ),
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                fontStyle: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyLarge
-                                                                    .fontStyle,
-                                                                lineHeight: 1.5,
-                                                              ),
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Icon(
-                                                        Icons
-                                                            .chevron_right_rounded,
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .warning,
-                                                        size: 24.0,
-                                                      ),
-                                                    ],
+                                                        Icon(
+                                                          Icons
+                                                              .chevron_right_rounded,
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .warning,
+                                                          size: 24.0,
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ].divide(SizedBox(height: 16.0)),
+                                          ].divide(SizedBox(height: 16.0)),
+                                        ),
                                       ),
                                     ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                await showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  enableDrag: false,
+                                  context: context,
+                                  builder: (context) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        FocusScope.of(context).unfocus();
+                                        FocusManager.instance.primaryFocus
+                                            ?.unfocus();
+                                      },
+                                      child: Padding(
+                                        padding:
+                                            MediaQuery.viewInsetsOf(context),
+                                        child: Container(
+                                          height: MediaQuery.sizeOf(context)
+                                                  .height *
+                                              0.6,
+                                          child: ComentWidget(),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ).then((value) => safeSetState(() {}));
+                              },
+                              child: wrapWithModel(
+                                model: _model.actionRowModel1,
+                                updateCallback: () => safeSetState(() {}),
+                                child: ActionRowWidget(
+                                  icon: Icon(
+                                    Icons.chat_bubble_outline_rounded,
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    size: 22.0,
                                   ),
-                                ],
+                                  title: 'Комментарий и фото к заказу',
+                                  value: '',
+                                ),
                               ),
                             ),
-                          ),
-                          InkWell(
-                            splashColor: Colors.transparent,
-                            focusColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () async {
-                              await showModalBottomSheet(
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                enableDrag: false,
-                                context: context,
-                                builder: (context) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      FocusScope.of(context).unfocus();
-                                      FocusManager.instance.primaryFocus
-                                          ?.unfocus();
-                                    },
-                                    child: Padding(
-                                      padding: MediaQuery.viewInsetsOf(context),
-                                      child: Container(
-                                        height:
-                                            MediaQuery.sizeOf(context).height *
-                                                0.6,
-                                        child: ComentWidget(),
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                await showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  enableDrag: false,
+                                  context: context,
+                                  builder: (context) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        FocusScope.of(context).unfocus();
+                                        FocusManager.instance.primaryFocus
+                                            ?.unfocus();
+                                      },
+                                      child: Padding(
+                                        padding:
+                                            MediaQuery.viewInsetsOf(context),
+                                        child: OtherPeopleWidget(),
                                       ),
-                                    ),
-                                  );
-                                },
-                              ).then((value) => safeSetState(() {}));
-                            },
-                            child: wrapWithModel(
-                              model: _model.actionRowModel1,
-                              updateCallback: () => safeSetState(() {}),
-                              child: ActionRowWidget(
-                                icon: Icon(
-                                  Icons.chat_bubble_outline_rounded,
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  size: 22.0,
+                                    );
+                                  },
+                                ).then((value) => safeSetState(() {}));
+                              },
+                              child: wrapWithModel(
+                                model: _model.actionRowModel2,
+                                updateCallback: () => safeSetState(() {}),
+                                child: ActionRowWidget(
+                                  icon: Icon(
+                                    Icons.person_outline_rounded,
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    size: 22.0,
+                                  ),
+                                  title: 'Заказ для другого человека',
+                                  value: '',
                                 ),
-                                title: 'Комментарий и фото к заказу',
-                                value: '',
                               ),
                             ),
-                          ),
-                          InkWell(
-                            splashColor: Colors.transparent,
-                            focusColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () async {
-                              await showModalBottomSheet(
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                enableDrag: false,
-                                context: context,
-                                builder: (context) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      FocusScope.of(context).unfocus();
-                                      FocusManager.instance.primaryFocus
-                                          ?.unfocus();
-                                    },
-                                    child: Padding(
-                                      padding: MediaQuery.viewInsetsOf(context),
-                                      child: OtherPeopleWidget(),
-                                    ),
-                                  );
-                                },
-                              ).then((value) => safeSetState(() {}));
-                            },
-                            child: wrapWithModel(
-                              model: _model.actionRowModel2,
-                              updateCallback: () => safeSetState(() {}),
-                              child: ActionRowWidget(
-                                icon: Icon(
-                                  Icons.person_outline_rounded,
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  size: 22.0,
-                                ),
-                                title: 'Заказ для другого человека',
-                                value: '',
-                              ),
-                            ),
-                          ),
-                          Stack(
-                            children: [
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  final _datePickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: getCurrentTimestamp,
-                                    firstDate: getCurrentTimestamp,
-                                    lastDate: DateTime(2050),
-                                    builder: (context, child) {
-                                      return wrapInMaterialDatePickerTheme(
-                                        context,
-                                        child!,
-                                        headerBackgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .primary,
-                                        headerForegroundColor:
-                                            FlutterFlowTheme.of(context).info,
-                                        headerTextStyle: FlutterFlowTheme.of(
-                                                context)
-                                            .headlineLarge
-                                            .override(
-                                              font: GoogleFonts.manrope(
-                                                fontWeight: FontWeight.w600,
-                                                fontStyle:
-                                                    FlutterFlowTheme.of(context)
-                                                        .headlineLarge
-                                                        .fontStyle,
-                                              ),
-                                              fontSize: 32.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w600,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .headlineLarge
-                                                      .fontStyle,
-                                            ),
-                                        pickerBackgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .secondaryBackground,
-                                        pickerForegroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                        selectedDateTimeBackgroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .primary,
-                                        selectedDateTimeForegroundColor:
-                                            FlutterFlowTheme.of(context).info,
-                                        actionButtonForegroundColor:
-                                            FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                        iconSize: 24.0,
-                                      );
-                                    },
-                                  );
-
-                                  TimeOfDay? _datePickedTime;
-                                  if (_datePickedDate != null) {
-                                    _datePickedTime = await showTimePicker(
+                            Stack(
+                              children: [
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    final _datePickedDate =
+                                        await showDatePicker(
                                       context: context,
-                                      initialTime: TimeOfDay.fromDateTime(
-                                          getCurrentTimestamp),
+                                      initialDate: getCurrentTimestamp,
+                                      firstDate: getCurrentTimestamp,
+                                      lastDate: DateTime(2050),
                                       builder: (context, child) {
-                                        return wrapInMaterialTimePickerTheme(
+                                        return wrapInMaterialDatePickerTheme(
                                           context,
                                           child!,
                                           headerBackgroundColor:
@@ -920,142 +936,215 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                         );
                                       },
                                     );
-                                  }
 
-                                  if (_datePickedDate != null &&
-                                      _datePickedTime != null) {
-                                    safeSetState(() {
-                                      _model.datePicked = DateTime(
-                                        _datePickedDate.year,
-                                        _datePickedDate.month,
-                                        _datePickedDate.day,
-                                        _datePickedTime!.hour,
-                                        _datePickedTime.minute,
-                                      );
-                                    });
-                                  } else if (_model.datePicked != null) {
-                                    safeSetState(() {
-                                      _model.datePicked = getCurrentTimestamp;
-                                    });
-                                  }
-                                  safeSetState(() {});
-                                  FFAppState().aFutureOrder = true;
-                                  safeSetState(() {});
-                                },
-                                child: wrapWithModel(
-                                  model: _model.actionRowCopyModel,
-                                  updateCallback: () => safeSetState(() {}),
-                                  child: ActionRowCopyWidget(
-                                    icon: Icon(
-                                      Icons.schedule_sharp,
-                                      color: Color(0xFF636366),
-                                      size: 22.0,
-                                    ),
-                                    title: 'Предварительный заказ',
-                                    value: '',
-                                    timeandDate: _model.datePicked,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
-                              shape: BoxShape.rectangle,
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Container(
-                                  height: 1.0,
-                                  decoration: BoxDecoration(
-                                    color:
-                                        FlutterFlowTheme.of(context).alternate,
-                                    shape: BoxShape.rectangle,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(24.0),
-                                  child: Container(
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        InkWell(
-                                          splashColor: Colors.transparent,
-                                          focusColor: Colors.transparent,
-                                          hoverColor: Colors.transparent,
-                                          highlightColor: Colors.transparent,
-                                          onTap: () async {
-                                            await showModalBottomSheet(
-                                              isScrollControlled: true,
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              enableDrag: false,
-                                              context: context,
-                                              builder: (context) {
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    FocusScope.of(context)
-                                                        .unfocus();
-                                                    FocusManager
-                                                        .instance.primaryFocus
-                                                        ?.unfocus();
-                                                  },
-                                                  child: Padding(
-                                                    padding:
-                                                        MediaQuery.viewInsetsOf(
-                                                            context),
-                                                    child: CashWidget(),
-                                                  ),
-                                                );
-                                              },
-                                            ).then(
-                                                (value) => safeSetState(() {}));
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .surfaceVariant,
-                                              borderRadius:
-                                                  BorderRadius.circular(12.0),
-                                              shape: BoxShape.rectangle,
-                                            ),
-                                            child: Padding(
-                                              padding: EdgeInsets.all(16.0),
-                                              child: Container(
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.payments_rounded,
-                                                      color:
+                                    TimeOfDay? _datePickedTime;
+                                    if (_datePickedDate != null) {
+                                      _datePickedTime = await showTimePicker(
+                                        context: context,
+                                        initialTime: TimeOfDay.fromDateTime(
+                                            getCurrentTimestamp),
+                                        builder: (context, child) {
+                                          return wrapInMaterialTimePickerTheme(
+                                            context,
+                                            child!,
+                                            headerBackgroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
+                                            headerForegroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .info,
+                                            headerTextStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .headlineLarge
+                                                    .override(
+                                                      font: GoogleFonts.manrope(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .headlineLarge
+                                                                .fontStyle,
+                                                      ),
+                                                      fontSize: 32.0,
+                                                      letterSpacing: 0.0,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontStyle:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .warning,
-                                                      size: 20.0,
+                                                              .headlineLarge
+                                                              .fontStyle,
                                                     ),
-                                                    Text(
-                                                      'Наличные',
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .labelLarge
-                                                              .override(
-                                                                font: GoogleFonts
-                                                                    .openSans(
+                                            pickerBackgroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondaryBackground,
+                                            pickerForegroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .primaryText,
+                                            selectedDateTimeBackgroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
+                                            selectedDateTimeForegroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .info,
+                                            actionButtonForegroundColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .primaryText,
+                                            iconSize: 24.0,
+                                          );
+                                        },
+                                      );
+                                    }
+
+                                    if (_datePickedDate != null &&
+                                        _datePickedTime != null) {
+                                      safeSetState(() {
+                                        _model.datePicked = DateTime(
+                                          _datePickedDate.year,
+                                          _datePickedDate.month,
+                                          _datePickedDate.day,
+                                          _datePickedTime!.hour,
+                                          _datePickedTime.minute,
+                                        );
+                                      });
+                                    } else if (_model.datePicked != null) {
+                                      safeSetState(() {
+                                        _model.datePicked = getCurrentTimestamp;
+                                      });
+                                    }
+                                    FFAppState().datePicked = _model.datePicked;
+                                    safeSetState(() {});
+                                    safeSetState(() {});
+                                    FFAppState().aFutureOrder = true;
+                                    safeSetState(() {});
+                                  },
+                                  child: wrapWithModel(
+                                    model: _model.actionRowCopyModel,
+                                    updateCallback: () => safeSetState(() {}),
+                                    child: ActionRowCopyWidget(
+                                      icon: Icon(
+                                        Icons.schedule_sharp,
+                                        color: Color(0xFF636366),
+                                        size: 22.0,
+                                      ),
+                                      title: 'Предварительный заказ',
+                                      value: '',
+                                      timeandDate: _model.datePicked,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                shape: BoxShape.rectangle,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Container(
+                                    height: 1.0,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .alternate,
+                                      shape: BoxShape.rectangle,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(24.0),
+                                    child: Container(
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            splashColor: Colors.transparent,
+                                            focusColor: Colors.transparent,
+                                            hoverColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            onTap: () async {
+                                              await showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                enableDrag: false,
+                                                context: context,
+                                                builder: (context) {
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      FocusScope.of(context)
+                                                          .unfocus();
+                                                      FocusManager
+                                                          .instance.primaryFocus
+                                                          ?.unfocus();
+                                                    },
+                                                    child: Padding(
+                                                      padding: MediaQuery
+                                                          .viewInsetsOf(
+                                                              context),
+                                                      child: CashWidget(),
+                                                    ),
+                                                  );
+                                                },
+                                              ).then((value) =>
+                                                  safeSetState(() {}));
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .surfaceVariant,
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                                shape: BoxShape.rectangle,
+                                              ),
+                                              child: Padding(
+                                                padding: EdgeInsets.all(16.0),
+                                                child: Container(
+                                                  child: Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.payments_rounded,
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .warning,
+                                                        size: 20.0,
+                                                      ),
+                                                      Text(
+                                                        'Наличные',
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelLarge
+                                                                .override(
+                                                                  font: GoogleFonts
+                                                                      .openSans(
+                                                                    fontWeight: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .labelLarge
+                                                                        .fontWeight,
+                                                                    fontStyle: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .labelLarge
+                                                                        .fontStyle,
+                                                                  ),
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                   fontWeight: FlutterFlowTheme.of(
                                                                           context)
                                                                       .labelLarge
@@ -1064,65 +1153,127 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                                                           context)
                                                                       .labelLarge
                                                                       .fontStyle,
+                                                                  lineHeight:
+                                                                      1.3,
                                                                 ),
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                fontWeight: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelLarge
-                                                                    .fontWeight,
-                                                                fontStyle: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelLarge
-                                                                    .fontStyle,
-                                                                lineHeight: 1.3,
-                                                              ),
-                                                    ),
-                                                  ].divide(
-                                                      SizedBox(width: 8.0)),
+                                                      ),
+                                                    ].divide(
+                                                        SizedBox(width: 8.0)),
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: InkWell(
-                                            splashColor: Colors.transparent,
-                                            focusColor: Colors.transparent,
-                                            hoverColor: Colors.transparent,
-                                            highlightColor: Colors.transparent,
-                                            onTap: () async {},
-                                            child: wrapWithModel(
-                                              model: _model.buttonModel,
-                                              updateCallback: () =>
-                                                  safeSetState(() {}),
-                                              child: ButtonWidget(
-                                                iconPresent: false,
-                                                iconEndPresent: false,
-                                                content: 'Заказать · 7 500 ₽',
-                                                variant: 'primary',
-                                                size: 'large',
-                                                fullWidth: true,
-                                                loading: false,
-                                                disabled: false,
-                                              ),
+                                          FFButtonWidget(
+                                            onPressed: () async {
+                                              _model.theOrderRow =
+                                                  await OrdersTable().insert({
+                                                'customer_profile':
+                                                    currentUserUid,
+                                                'date_of_service':
+                                                    supaSerialize<DateTime>(
+                                                        _model.datePicked),
+                                                'for_thirdparty': false,
+                                                'orderStatus':
+                                                    OrderStatus.Created.name,
+                                                'paymentStatus': PaymentStatus
+                                                    .Expecting.name,
+                                                'assignment_status':
+                                                    AssignmentStatus
+                                                        .NotAssigned.name,
+                                              });
+                                              await actions
+                                                  .insertAllProductsToUnitDetails();
+                                              await showDialog(
+                                                context: context,
+                                                builder: (alertDialogContext) {
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                        ' заказ оформлен!'),
+                                                    content: Text(
+                                                        'Ваш заказ успешно оформлен!'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                alertDialogContext),
+                                                        child: Text('Ok'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+
+                                              context.pushNamed(
+                                                  MapPageWidget.routeName);
+
+                                              safeSetState(() {});
+                                            },
+                                            text: 'Заказать · ${formatNumber(
+                                              functions.orderTotal(FFAppState()
+                                                  .TheProductList
+                                                  .toList()),
+                                              formatType: FormatType.decimal,
+                                            )} ₽',
+                                            options: FFButtonOptions(
+                                              height: 40.0,
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      16.0, 0.0, 16.0, 0.0),
+                                              iconPadding: EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                              textStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .titleSmall
+                                                      .override(
+                                                        font:
+                                                            GoogleFonts.manrope(
+                                                          fontWeight:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleSmall
+                                                                  .fontWeight,
+                                                          fontStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .titleSmall
+                                                                  .fontStyle,
+                                                        ),
+                                                        color: Colors.white,
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .fontWeight,
+                                                        fontStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .fontStyle,
+                                                      ),
+                                              elevation: 0.0,
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
                                             ),
                                           ),
-                                        ),
-                                      ].divide(SizedBox(width: 16.0)),
+                                        ].divide(SizedBox(width: 16.0)),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ].divide(SizedBox(height: 0.0)),
+                          ].divide(SizedBox(height: 0.0)),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

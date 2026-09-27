@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
+import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,12 @@ import 'kitchen_u_g_model.dart';
 export 'kitchen_u_g_model.dart';
 
 class KitchenUGWidget extends StatefulWidget {
-  const KitchenUGWidget({super.key});
+  const KitchenUGWidget({
+    super.key,
+    this.peoductType,
+  });
+
+  final String? peoductType;
 
   @override
   State<KitchenUGWidget> createState() => _KitchenUGWidgetState();
@@ -40,6 +46,8 @@ class _KitchenUGWidgetState extends State<KitchenUGWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       height: 363.9,
       decoration: BoxDecoration(
@@ -214,7 +222,18 @@ class _KitchenUGWidgetState extends State<KitchenUGWidget> {
                                         .fontStyle,
                                   ),
                         ),
-                        count: _model.countControllerValue ??= 0,
+                        count: _model.countControllerValue ??=
+                            valueOrDefault<int>(
+                          FFAppState()
+                              .TheProductList
+                              .where((e) =>
+                                  (e.productType == widget!.peoductType) &&
+                                  (e.measurement == '200-340'))
+                              .toList()
+                              .firstOrNull
+                              ?.quantity,
+                          0,
+                        ),
                         updateCount: (count) => safeSetState(
                             () => _model.countControllerValue = count),
                         stepSize: 1,
@@ -232,7 +251,35 @@ class _KitchenUGWidgetState extends State<KitchenUGWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 1.0, 0.0, 5.0),
                     child: FFButtonWidget(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        if (_model.countControllerValue == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.peoductType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Кухонный уголок',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.peoductType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Кухонный уголок',
+                            _model.one,
+                            _model.countControllerValue,
+                          );
+                        }
+
+                        _model.productGot = await actions.getAllProductTypes();
+                        _model.productNameList =
+                            await actions.getAllProductNames();
+                        FFAppState().productTypeList =
+                            _model.productGot!.toList().cast<String>();
+                        FFAppState().ProductNameALone =
+                            _model.productNameList!.toList().cast<String>();
+                        safeSetState(() {});
+                        Navigator.pop(context);
+
+                        safeSetState(() {});
+                      },
                       text: 'Сохранить',
                       options: FFButtonOptions(
                         width: 159.1,

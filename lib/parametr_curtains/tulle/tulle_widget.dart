@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
+import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,12 @@ import 'tulle_model.dart';
 export 'tulle_model.dart';
 
 class TulleWidget extends StatefulWidget {
-  const TulleWidget({super.key});
+  const TulleWidget({
+    super.key,
+    this.productType,
+  });
+
+  final String? productType;
 
   @override
   State<TulleWidget> createState() => _TulleWidgetState();
@@ -40,6 +46,8 @@ class _TulleWidgetState extends State<TulleWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       height: 363.9,
       decoration: BoxDecoration(
@@ -214,7 +222,18 @@ class _TulleWidgetState extends State<TulleWidget> {
                                         .fontStyle,
                                   ),
                         ),
-                        count: _model.countControllerValue1 ??= 0,
+                        count: _model.countControllerValue1 ??=
+                            valueOrDefault<int>(
+                          FFAppState()
+                              .TheProductList
+                              .where((e) =>
+                                  (e.productType == widget!.productType) &&
+                                  (e.measurement == 'Тюль(синтетика)'))
+                              .toList()
+                              .firstOrNull
+                              ?.quantity,
+                          0,
+                        ),
                         updateCount: (count) => safeSetState(
                             () => _model.countControllerValue1 = count),
                         stepSize: 1,
@@ -337,7 +356,18 @@ class _TulleWidgetState extends State<TulleWidget> {
                                         .fontStyle,
                                   ),
                         ),
-                        count: _model.countControllerValue2 ??= 0,
+                        count: _model.countControllerValue2 ??=
+                            valueOrDefault<int>(
+                          FFAppState()
+                              .TheProductList
+                              .where((e) =>
+                                  (e.productType == widget!.productType) &&
+                                  (e.measurement == 'Тюль(натуральная ткань)'))
+                              .toList()
+                              .firstOrNull
+                              ?.quantity,
+                          0,
+                        ),
                         updateCount: (count) => safeSetState(
                             () => _model.countControllerValue2 = count),
                         stepSize: 1,
@@ -355,7 +385,51 @@ class _TulleWidgetState extends State<TulleWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 1.0, 0.0, 5.0),
                     child: FFButtonWidget(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        if (_model.countControllerValue1 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Тюль(синтетика)',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Тюль(синтетика)',
+                            _model.one,
+                            _model.countControllerValue1,
+                          );
+                        }
+
+                        if (_model.countControllerValue2 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Тюль(натуральная ткань)',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Тюль(натуральная ткань)',
+                            _model.two,
+                            _model.countControllerValue2,
+                          );
+                        }
+
+                        _model.productGot = await actions.getAllProductTypes();
+                        _model.productNameList =
+                            await actions.getAllProductNames();
+                        FFAppState().productTypeList =
+                            _model.productGot!.toList().cast<String>();
+                        FFAppState().ProductNameALone =
+                            _model.productNameList!.toList().cast<String>();
+                        safeSetState(() {});
+                        Navigator.pop(context);
+
+                        safeSetState(() {});
+                      },
                       text: 'Сохранить',
                       options: FFButtonOptions(
                         width: 159.1,

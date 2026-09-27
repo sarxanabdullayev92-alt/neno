@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
+import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,12 @@ import 'cotton_wool_model.dart';
 export 'cotton_wool_model.dart';
 
 class CottonWoolWidget extends StatefulWidget {
-  const CottonWoolWidget({super.key});
+  const CottonWoolWidget({
+    super.key,
+    this.productType,
+  });
+
+  final String? productType;
 
   @override
   State<CottonWoolWidget> createState() => _CottonWoolWidgetState();
@@ -40,6 +46,8 @@ class _CottonWoolWidgetState extends State<CottonWoolWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       height: 363.9,
       decoration: BoxDecoration(
@@ -214,7 +222,18 @@ class _CottonWoolWidgetState extends State<CottonWoolWidget> {
                                         .fontStyle,
                                   ),
                         ),
-                        count: _model.countControllerValue ??= 0,
+                        count: _model.countControllerValue ??=
+                            valueOrDefault<int>(
+                          FFAppState()
+                              .TheProductList
+                              .where((e) =>
+                                  (e.productType == widget!.productType) &&
+                                  (e.measurement == 'Хлопок/Шерсть'))
+                              .toList()
+                              .firstOrNull
+                              ?.quantity,
+                          0,
+                        ),
                         updateCount: (count) => safeSetState(
                             () => _model.countControllerValue = count),
                         stepSize: 1,
@@ -232,7 +251,35 @@ class _CottonWoolWidgetState extends State<CottonWoolWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 1.0, 0.0, 5.0),
                     child: FFButtonWidget(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        if (_model.countControllerValue == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Хлопок/Шерсть',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Хлопок/Шерсть',
+                            _model.one,
+                            _model.countControllerValue,
+                          );
+                        }
+
+                        _model.productGot = await actions.getAllProductTypes();
+                        _model.productNameList =
+                            await actions.getAllProductNames();
+                        FFAppState().productTypeList =
+                            _model.productGot!.toList().cast<String>();
+                        FFAppState().ProductNameALone =
+                            _model.productNameList!.toList().cast<String>();
+                        safeSetState(() {});
+                        Navigator.pop(context);
+
+                        safeSetState(() {});
+                      },
                       text: 'Сохранить',
                       options: FFButtonOptions(
                         width: 159.1,

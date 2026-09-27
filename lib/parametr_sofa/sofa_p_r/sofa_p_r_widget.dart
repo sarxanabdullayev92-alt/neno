@@ -1,9 +1,9 @@
-import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_count_controller.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
+import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -234,11 +234,8 @@ class _SofaPRWidgetState extends State<SofaPRWidget> {
                               ?.quantity,
                           0,
                         ),
-                        updateCount: (count) async {
-                          safeSetState(
-                              () => _model.countControllerValue1 = count);
-                          if (_model.countControllerValue1 == 0) {}
-                        },
+                        updateCount: (count) => safeSetState(
+                            () => _model.countControllerValue1 = count),
                         stepSize: 1,
                         minimum: 0,
                         contentPadding: EdgeInsetsDirectional.fromSTEB(
@@ -523,31 +520,65 @@ class _SofaPRWidgetState extends State<SofaPRWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 1.0, 0.0, 5.0),
                     child: FFButtonWidget(
                       onPressed: () async {
-                        FFAppState().addToTheProductList(NumberAndPricesStruct(
-                          quantity: _model.countControllerValue1,
-                          costper1: _model.one,
-                          measurement: '100-190',
-                          productName: FFAppState().whatProductList.lastOrNull,
-                          productType: widget!.productType,
-                        ));
-                        safeSetState(() {});
-                        FFAppState().addToTheProductList(NumberAndPricesStruct(
-                          quantity: _model.countControllerValue2,
-                          costper1: _model.two,
-                          measurement: '200-340',
-                          productName: FFAppState().whatProductList.lastOrNull,
-                          productType: widget!.productType,
-                        ));
-                        safeSetState(() {});
-                        FFAppState().addToTheProductList(NumberAndPricesStruct(
-                          quantity: _model.countControllerValue3,
-                          costper1: _model.tree,
-                          measurement: '350-440',
-                          productName: FFAppState().whatProductList.lastOrNull,
-                          productType: widget!.productType,
-                        ));
+                        if (_model.countControllerValue1 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            '100-190',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            '100-190',
+                            _model.one,
+                            _model.countControllerValue1,
+                          );
+                        }
+
+                        if (_model.countControllerValue2 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            '200-340',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            '200-340',
+                            _model.two,
+                            _model.countControllerValue2,
+                          );
+                        }
+
+                        if (_model.countControllerValue3 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            '350-440',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            '350-440',
+                            _model.tree,
+                            _model.countControllerValue3,
+                          );
+                        }
+
+                        _model.productGot = await actions.getAllProductTypes();
+                        _model.productNameList =
+                            await actions.getAllProductNames();
+                        FFAppState().productTypeList =
+                            _model.productGot!.toList().cast<String>();
+                        FFAppState().ProductNameALone =
+                            _model.productNameList!.toList().cast<String>();
                         safeSetState(() {});
                         Navigator.pop(context);
+
+                        safeSetState(() {});
                       },
                       text: 'Сохранить',
                       options: FFButtonOptions(

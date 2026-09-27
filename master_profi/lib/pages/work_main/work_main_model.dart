@@ -1,3 +1,4 @@
+import '/backend/supabase/supabase.dart';
 import '/components/diagnostic_item/diagnostic_item_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_timer.dart';
@@ -24,6 +25,8 @@ class WorkMainModel extends FlutterFlowModel<WorkMainWidget> {
 
   ///  State fields for stateful widgets in this page.
 
+  // Stores action output result for [Backend Call - Query Rows] action in WorkMain widget.
+  List<MastersRow>? masterRow;
   // Stores action output result for [Custom Action - getMyLocation] action in WorkMain widget.
   List<double>? myLocation;
   // Model for DiagnosticItem.

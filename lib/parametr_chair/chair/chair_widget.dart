@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
+import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,12 @@ import 'chair_model.dart';
 export 'chair_model.dart';
 
 class ChairWidget extends StatefulWidget {
-  const ChairWidget({super.key});
+  const ChairWidget({
+    super.key,
+    this.productType,
+  });
+
+  final String? productType;
 
   @override
   State<ChairWidget> createState() => _ChairWidgetState();
@@ -40,6 +46,8 @@ class _ChairWidgetState extends State<ChairWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       height: 526.49,
       decoration: BoxDecoration(
@@ -214,7 +222,18 @@ class _ChairWidgetState extends State<ChairWidget> {
                                         .fontStyle,
                                   ),
                         ),
-                        count: _model.countControllerValue1 ??= 0,
+                        count: _model.countControllerValue1 ??=
+                            valueOrDefault<int>(
+                          FFAppState()
+                              .TheProductList
+                              .where((e) =>
+                                  (e.productType == widget!.productType) &&
+                                  (e.measurement == 'Стул без мягкой спинки'))
+                              .toList()
+                              .firstOrNull
+                              ?.quantity,
+                          0,
+                        ),
                         updateCount: (count) => safeSetState(
                             () => _model.countControllerValue1 = count),
                         stepSize: 1,
@@ -337,7 +356,18 @@ class _ChairWidgetState extends State<ChairWidget> {
                                         .fontStyle,
                                   ),
                         ),
-                        count: _model.countControllerValue2 ??= 0,
+                        count: _model.countControllerValue2 ??=
+                            valueOrDefault<int>(
+                          FFAppState()
+                              .TheProductList
+                              .where((e) =>
+                                  (e.productType == widget!.productType) &&
+                                  (e.measurement == 'Стул с мягкой спинкой'))
+                              .toList()
+                              .firstOrNull
+                              ?.quantity,
+                          0,
+                        ),
                         updateCount: (count) => safeSetState(
                             () => _model.countControllerValue2 = count),
                         stepSize: 1,
@@ -460,7 +490,18 @@ class _ChairWidgetState extends State<ChairWidget> {
                                         .fontStyle,
                                   ),
                         ),
-                        count: _model.countControllerValue3 ??= 0,
+                        count: _model.countControllerValue3 ??=
+                            valueOrDefault<int>(
+                          FFAppState()
+                              .TheProductList
+                              .where((e) =>
+                                  (e.productType == widget!.productType) &&
+                                  (e.measurement == 'Стул кресло'))
+                              .toList()
+                              .firstOrNull
+                              ?.quantity,
+                          0,
+                        ),
                         updateCount: (count) => safeSetState(
                             () => _model.countControllerValue3 = count),
                         stepSize: 1,
@@ -583,7 +624,18 @@ class _ChairWidgetState extends State<ChairWidget> {
                                         .fontStyle,
                                   ),
                         ),
-                        count: _model.countControllerValue4 ??= 0,
+                        count: _model.countControllerValue4 ??=
+                            valueOrDefault<int>(
+                          FFAppState()
+                              .TheProductList
+                              .where((e) =>
+                                  (e.productType == widget!.productType) &&
+                                  (e.measurement == 'Стул компьютерный'))
+                              .toList()
+                              .firstOrNull
+                              ?.quantity,
+                          0,
+                        ),
                         updateCount: (count) => safeSetState(
                             () => _model.countControllerValue4 = count),
                         stepSize: 1,
@@ -706,7 +758,18 @@ class _ChairWidgetState extends State<ChairWidget> {
                                         .fontStyle,
                                   ),
                         ),
-                        count: _model.countControllerValue5 ??= 0,
+                        count: _model.countControllerValue5 ??=
+                            valueOrDefault<int>(
+                          FFAppState()
+                              .TheProductList
+                              .where((e) =>
+                                  (e.productType == widget!.productType) &&
+                                  (e.measurement == 'Стул офисный'))
+                              .toList()
+                              .firstOrNull
+                              ?.quantity,
+                          0,
+                        ),
                         updateCount: (count) => safeSetState(
                             () => _model.countControllerValue5 = count),
                         stepSize: 1,
@@ -724,7 +787,99 @@ class _ChairWidgetState extends State<ChairWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 1.0, 0.0, 5.0),
                     child: FFButtonWidget(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        if (_model.countControllerValue1 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Стул без мягкой спинки',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Стул без мягкой спинки',
+                            _model.one,
+                            _model.countControllerValue1,
+                          );
+                        }
+
+                        if (_model.countControllerValue2 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Стул с мягкой спинкой',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Стул с мягкой спинкой',
+                            _model.two,
+                            _model.countControllerValue2,
+                          );
+                        }
+
+                        if (_model.countControllerValue3 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Стул кресло',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Стул кресло',
+                            _model.tree,
+                            _model.countControllerValue3,
+                          );
+                        }
+
+                        if (_model.countControllerValue4 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Стул компьютерный',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Стул компьютерный',
+                            _model.fuor,
+                            _model.countControllerValue4,
+                          );
+                        }
+
+                        if (_model.countControllerValue5 == 0) {
+                          await actions.removeProductByTypeNameMeasurement(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Стул офисный',
+                          );
+                        } else {
+                          await actions.upsertProduct(
+                            widget!.productType,
+                            FFAppState().whatProductList.lastOrNull,
+                            'Стул офисный',
+                            _model.five,
+                            _model.countControllerValue5,
+                          );
+                        }
+
+                        _model.productGot = await actions.getAllProductTypes();
+                        _model.productNameList =
+                            await actions.getAllProductNames();
+                        FFAppState().productTypeList =
+                            _model.productGot!.toList().cast<String>();
+                        FFAppState().ProductNameALone =
+                            _model.productNameList!.toList().cast<String>();
+                        safeSetState(() {});
+                        Navigator.pop(context);
+
+                        safeSetState(() {});
+                      },
                       text: 'Сохранить',
                       options: FFButtonOptions(
                         width: 159.1,

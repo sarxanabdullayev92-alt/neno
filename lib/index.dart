@@ -1,8 +1,6 @@
 // Export pages
 export '/pages/product_details/product_details_widget.dart'
     show ProductDetailsWidget;
-export '/pages/searching_for_address/searching_for_address_widget.dart'
-    show SearchingForAddressWidget;
 export '/not_used/verify_code/verify_code_widget.dart' show VerifyCodeWidget;
 export '/pages/ordertotal_details/ordertotal_details_widget.dart'
     show OrdertotalDetailsWidget;
