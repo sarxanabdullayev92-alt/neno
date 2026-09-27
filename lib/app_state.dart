@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'flutter_flow/request_manager.dart';
 import '/backend/schema/structs/index.dart';
 import '/backend/schema/enums/enums.dart';
 import '/backend/api_requests/api_manager.dart';
@@ -84,6 +85,9 @@ class FFAppState extends ChangeNotifier {
     });
     _safeInit(() {
       _activeMasterId = prefs.getInt('ff_activeMasterId') ?? _activeMasterId;
+    });
+    _safeInit(() {
+      _addressDetails = prefs.getString('ff_addressDetails') ?? _addressDetails;
     });
   }
 
@@ -368,7 +372,23 @@ class FFAppState extends ChangeNotifier {
   String get addressDetails => _addressDetails;
   set addressDetails(String value) {
     _addressDetails = value;
+    prefs.setString('ff_addressDetails', value);
   }
+
+  final _mappageServiceQueryManager = FutureRequestManager<List<ServicesRow>>();
+  Future<List<ServicesRow>> mappageServiceQuery({
+    String? uniqueQueryKey,
+    bool? overrideCache,
+    required Future<List<ServicesRow>> Function() requestFn,
+  }) =>
+      _mappageServiceQueryManager.performRequest(
+        uniqueQueryKey: uniqueQueryKey,
+        overrideCache: overrideCache,
+        requestFn: requestFn,
+      );
+  void clearMappageServiceQueryCache() => _mappageServiceQueryManager.clear();
+  void clearMappageServiceQueryCacheKey(String? uniqueKey) =>
+      _mappageServiceQueryManager.clearRequest(uniqueKey);
 }
 
 void _safeInit(Function() initializeField) {
