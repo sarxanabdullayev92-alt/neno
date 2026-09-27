@@ -88,9 +88,6 @@ class _MapPageWidgetState extends State<MapPageWidget> {
         );
       }
     });
-
-    _model.textController ??= TextEditingController();
-    _model.textFieldFocusNode ??= FocusNode();
   }
 
   @override
@@ -593,205 +590,29 @@ class _MapPageWidgetState extends State<MapPageWidget> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Expanded(
-                              child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    12.0, 0.0, 0.0, 0.0),
-                                child: Container(
-                                  width: 200.0,
-                                  child: TextFormField(
-                                    controller: _model.textController,
-                                    focusNode: _model.textFieldFocusNode,
-                                    onFieldSubmitted: (_) async {
-                                      var _shouldSetState = false;
-                                      _model.isSearching = true;
-                                      safeSetState(() {});
-                                      _model.geoResult =
-                                          await actions.geocodeAddress(
-                                        _model.textController.text,
-                                      );
-                                      _shouldSetState = true;
-                                      if (_model.geoResult != null &&
-                                          (_model.geoResult)!.isNotEmpty) {
-                                        _model.searchLat = _model.geoResult
-                                            ?.elementAtOrNull(0);
-                                        _model.searchLng = _model.geoResult
-                                            ?.elementAtOrNull(1);
-                                        _model.isSearching = false;
-                                        safeSetState(() {});
-                                        _model.geo =
-                                            await actions.reverseGeocode(
-                                          (_model.geoResult!
-                                              .elementAtOrNull(0))!,
-                                          (_model.geoResult!
-                                              .elementAtOrNull(1))!,
-                                        );
-                                        _shouldSetState = true;
-                                        FFAppState().orderLat = (_model
-                                            .geoResult!
-                                            .elementAtOrNull(0))!;
-                                        FFAppState().orderLng = (_model
-                                            .geoResult!
-                                            .elementAtOrNull(1))!;
-                                        FFAppState().orderAddress =
-                                            _model.geo != null &&
-                                                    (_model.geo)!.isNotEmpty
-                                                ? (_model.geo!
-                                                    .elementAtOrNull(0))!
-                                                : _model.textController.text;
-                                        FFAppState().city = _model.geo !=
-                                                    null &&
-                                                (_model.geo)!.isNotEmpty
-                                            ? (_model.geo!.elementAtOrNull(1))!
-                                            : FFAppState().city;
-                                        safeSetState(() {});
-                                      } else {
-                                        _model.isSearching = false;
-                                        safeSetState(() {});
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              'Адрес не найден',
-                                              style: TextStyle(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryText,
-                                              ),
-                                            ),
-                                            duration:
-                                                Duration(milliseconds: 4000),
-                                            backgroundColor:
-                                                FlutterFlowTheme.of(context)
-                                                    .secondary,
-                                          ),
-                                        );
-                                        if (_shouldSetState)
-                                          safeSetState(() {});
-                                        return;
-                                      }
-
-                                      if (_shouldSetState) safeSetState(() {});
-                                    },
-                                    autofocus: false,
-                                    enabled: true,
-                                    obscureText: false,
-                                    decoration: InputDecoration(
-                                      isDense: true,
-                                      labelStyle: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            font: GoogleFonts.inter(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .fontStyle,
-                                            ),
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontStyle,
-                                          ),
-                                      hintText: 'Город, улица, дом',
-                                      hintStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .override(
-                                            font: GoogleFonts.inter(
-                                              fontWeight:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelMedium
-                                                      .fontWeight,
-                                              fontStyle:
-                                                  FlutterFlowTheme.of(context)
-                                                      .labelMedium
-                                                      .fontStyle,
-                                            ),
-                                            letterSpacing: 0.0,
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontStyle,
-                                          ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Color(0x00000000),
-                                          width: 1.0,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .primary,
-                                          width: 1.0,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .error,
-                                          width: 1.0,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                      ),
-                                      focusedErrorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: FlutterFlowTheme.of(context)
-                                              .error,
-                                          width: 1.0,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                      ),
-                                      filled: true,
-                                      fillColor: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                    ),
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          font: GoogleFonts.inter(
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .bodyMedium
-                                                    .fontStyle,
-                                          ),
-                                          letterSpacing: 0.0,
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .bodyMedium
-                                                  .fontStyle,
-                                        ),
-                                    cursorColor: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                    enableInteractiveSelection: true,
-                                    validator: _model.textControllerValidator
-                                        .asValidator(context),
-                                  ),
+                              child: Container(
+                                width: double.infinity,
+                                height: 42.0,
+                                child: custom_widgets.AddressSearchField(
+                                  width: double.infinity,
+                                  height: 42.0,
+                                  onSelected: (point) async {
+                                    _model.searchLat = point.elementAtOrNull(0);
+                                    _model.searchLng = point.elementAtOrNull(1);
+                                    safeSetState(() {});
+                                    FFAppState().orderLat =
+                                        point.elementAtOrNull(0)!;
+                                    FFAppState().orderLng =
+                                        point.elementAtOrNull(1)!;
+                                    safeSetState(() {});
+                                  },
+                                  onAddress: (address) async {
+                                    FFAppState().orderAddress =
+                                        address.elementAtOrNull(0)!;
+                                    FFAppState().city =
+                                        address.elementAtOrNull(1)!;
+                                    safeSetState(() {});
+                                  },
                                 ),
                               ),
                             ),

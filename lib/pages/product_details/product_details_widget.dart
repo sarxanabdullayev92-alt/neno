@@ -1257,7 +1257,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                                             .TheProductList
                                                             .toList()),
                                                     'address':
-                                                        'orderAddress ${FFAppState().addressDetails}',
+                                                        '${FFAppState().orderAddress},${FFAppState().addressDetails}',
                                                     'city': FFAppState().city,
                                                     'latitude':
                                                         FFAppState().orderLat,
@@ -1302,7 +1302,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                                   FFAppState().aFutureOrder =
                                                       false;
                                                   FFAppState().addressDetails =
-                                                      ' ';
+                                                      '';
                                                   FFAppState().TheProductList =
                                                       [];
                                                   FFAppState().whatProductList =
