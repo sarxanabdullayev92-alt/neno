@@ -28,4 +28,13 @@ class UnitdetailsRow extends SupabaseDataRow {
 
   int? get quantity => getField<int>('quantity');
   set quantity(int? value) => setField<int>('quantity', value);
+
+  String? get productName => getField<String>('productName');
+  set productName(String? value) => setField<String>('productName', value);
+
+  String? get productType => getField<String>('productType');
+  set productType(String? value) => setField<String>('productType', value);
+
+  int? get orderId => getField<int>('order_id');
+  set orderId(int? value) => setField<int>('order_id', value);
 }

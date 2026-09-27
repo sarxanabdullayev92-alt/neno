@@ -28,7 +28,9 @@ Future removeProductsByTypeAndName(
             item.productName == nameToRemove,
       );
 
-  FFAppState().update(() {});
+  FFAppState().update(() {
+    FFAppState().TheProductList = FFAppState().TheProductList.toList();
+  });
 }
 // Set your action name, define your arguments and return parameter,
 // and then add the boilerplate code using the `</>` button on the right!

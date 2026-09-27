@@ -104,7 +104,7 @@ class FFAppState extends ChangeNotifier {
 
   List<NumberAndPricesStruct> _TheProductList = [
     NumberAndPricesStruct.fromSerializableMap(jsonDecode(
-        '{\"Quantity\":\"4\",\"costper1\":\"3\",\"measurement\":\"Hello World\",\"productName\":\"Hello World\",\"productType\":\"Hello World\"}'))
+        '{\"Quantity\":\"4\",\"costper1\":\"3.0\",\"measurement\":\"\",\"productName\":\"\",\"productType\":\"\"}'))
   ];
   List<NumberAndPricesStruct> get TheProductList => _TheProductList;
   set TheProductList(List<NumberAndPricesStruct> value) {
@@ -146,7 +146,7 @@ class FFAppState extends ChangeNotifier {
         _TheProductList.map((x) => x.serialize()).toList());
   }
 
-  List<String> _whatProductList = ['Hello World'];
+  List<String> _whatProductList = [''];
   List<String> get whatProductList => _whatProductList;
   set whatProductList(List<String> value) {
     _whatProductList = value;
@@ -210,7 +210,7 @@ class FFAppState extends ChangeNotifier {
     generalListOfService.insert(index, value);
   }
 
-  List<String> _productTypeList = ['Hello World'];
+  List<String> _productTypeList = [''];
   List<String> get productTypeList => _productTypeList;
   set productTypeList(List<String> value) {
     _productTypeList = value;
@@ -336,7 +336,7 @@ class FFAppState extends ChangeNotifier {
     prefs.setInt('ff_activeMasterId', value);
   }
 
-  List<String> _ProductNameALone = ['Hello World'];
+  List<String> _ProductNameALone = [''];
   List<String> get ProductNameALone => _ProductNameALone;
   set ProductNameALone(List<String> value) {
     _ProductNameALone = value;
@@ -363,6 +363,12 @@ class FFAppState extends ChangeNotifier {
 
   void insertAtIndexInProductNameALone(int index, String value) {
     ProductNameALone.insert(index, value);
+  }
+
+  String _addressDetails = '';
+  String get addressDetails => _addressDetails;
+  set addressDetails(String value) {
+    _addressDetails = value;
   }
 
   final _mappageServiceQueryManager = FutureRequestManager<List<ServicesRow>>();

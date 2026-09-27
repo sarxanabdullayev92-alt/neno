@@ -44,6 +44,20 @@ class _MapPageWidgetState extends State<MapPageWidget> {
         FFAppState().myLng = (_model.myLocation!.elementAtOrNull(1))!;
         safeSetState(() {});
       }
+      if (FFAppState().orderAddress == null ||
+          FFAppState().orderAddress == '') {
+        _model.gpsGeo = await actions.reverseGeocode(
+          FFAppState().myLat,
+          FFAppState().myLng,
+        );
+        if (_model.gpsGeo != null && (_model.gpsGeo)!.isNotEmpty) {
+          FFAppState().orderAddress = (_model.gpsGeo!.elementAtOrNull(0))!;
+          FFAppState().city = (_model.gpsGeo!.elementAtOrNull(1))!;
+          FFAppState().orderLat = FFAppState().myLat;
+          FFAppState().orderLng = FFAppState().myLng;
+          safeSetState(() {});
+        }
+      }
       if (FFAppState().activeOrderId > 0) {
         await actions.subscribeMyOrder(
           true,
@@ -489,8 +503,12 @@ class _MapPageWidgetState extends State<MapPageWidget> {
                           child: custom_widgets.OsmMapWidget(
                             width: double.infinity,
                             height: MediaQuery.sizeOf(context).height * 0.9,
-                            centerLat: FFAppState().myLat,
-                            centerLng: FFAppState().myLng,
+                            centerLat: _model.searchLat != null
+                                ? _model.searchLat
+                                : FFAppState().myLat,
+                            centerLng: _model.searchLng != null
+                                ? _model.searchLng
+                                : FFAppState().myLng,
                             autoLoadMasters: true,
                             city: FFAppState().city,
                             radiusKm: 50.0,
@@ -513,12 +531,6 @@ class _MapPageWidgetState extends State<MapPageWidget> {
                               child: custom_widgets.OsmMapWidget(
                                 width: double.infinity,
                                 height: MediaQuery.sizeOf(context).height * 0.9,
-                                centerLat: _model.searchLat != null
-                                    ? _model.searchLat
-                                    : FFAppState().myLat,
-                                centerLng: _model.searchLng != null
-                                    ? _model.searchLng
-                                    : FFAppState().myLng,
                                 autoLoadMasters: false,
                                 trackMasterId: FFAppState().activeMasterId,
                                 clientLat: FFAppState().orderLat,
@@ -605,6 +617,32 @@ class _MapPageWidgetState extends State<MapPageWidget> {
                                         _model.searchLng = _model.geoResult
                                             ?.elementAtOrNull(1);
                                         _model.isSearching = false;
+                                        safeSetState(() {});
+                                        _model.geo =
+                                            await actions.reverseGeocode(
+                                          (_model.geoResult!
+                                              .elementAtOrNull(0))!,
+                                          (_model.geoResult!
+                                              .elementAtOrNull(1))!,
+                                        );
+                                        _shouldSetState = true;
+                                        FFAppState().orderLat = (_model
+                                            .geoResult!
+                                            .elementAtOrNull(0))!;
+                                        FFAppState().orderLng = (_model
+                                            .geoResult!
+                                            .elementAtOrNull(1))!;
+                                        FFAppState().orderAddress =
+                                            _model.geo != null &&
+                                                    (_model.geo)!.isNotEmpty
+                                                ? (_model.geo!
+                                                    .elementAtOrNull(0))!
+                                                : _model.textController.text;
+                                        FFAppState().city = _model.geo !=
+                                                    null &&
+                                                (_model.geo)!.isNotEmpty
+                                            ? (_model.geo!.elementAtOrNull(1))!
+                                            : FFAppState().city;
                                         safeSetState(() {});
                                       } else {
                                         _model.isSearching = false;
@@ -819,6 +857,39 @@ class _MapPageWidgetState extends State<MapPageWidget> {
                               ),
                             ),
                           ],
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional(-1.0, 0.0),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                15.0, 0.0, 0.0, 0.0),
+                            child: Text(
+                              valueOrDefault<String>(
+                                FFAppState().orderAddress,
+                                'Адрес не выбран',
+                              ),
+                              maxLines: 2,
+                              style: FlutterFlowTheme.of(context)
+                                  .labelMedium
+                                  .override(
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
+                            ),
+                          ),
                         ),
                         Divider(
                           thickness: 1.0,

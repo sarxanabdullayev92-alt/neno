@@ -1,5 +1,6 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/schema/enums/enums.dart';
+import '/backend/schema/structs/index.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/action_row/action_row_widget.dart';
 import '/components/action_row_copy/action_row_copy_widget.dart';
@@ -1166,48 +1167,158 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget>
                                           ),
                                           FFButtonWidget(
                                             onPressed: () async {
-                                              _model.theOrderRow =
-                                                  await OrdersTable().insert({
-                                                'customer_profile':
-                                                    currentUserUid,
-                                                'date_of_service':
-                                                    supaSerialize<DateTime>(
-                                                        _model.datePicked),
-                                                'for_thirdparty': false,
-                                                'orderStatus':
-                                                    OrderStatus.Created.name,
-                                                'paymentStatus': PaymentStatus
-                                                    .Expecting.name,
-                                                'assignment_status':
-                                                    AssignmentStatus
-                                                        .NotAssigned.name,
-                                              });
-                                              await actions
-                                                  .insertAllProductsToUnitDetails();
-                                              await showDialog(
-                                                context: context,
-                                                builder: (alertDialogContext) {
-                                                  return AlertDialog(
-                                                    title: Text(
-                                                        ' заказ оформлен!'),
+                                              var _shouldSetState = false;
+                                              if (functions.orderTotal(
+                                                      FFAppState()
+                                                          .TheProductList
+                                                          .toList()) <=
+                                                  0.0) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
                                                     content: Text(
-                                                        'Ваш заказ успешно оформлен!'),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                alertDialogContext),
-                                                        child: Text('Ok'),
+                                                      'Выберите услугу и параметры',
+                                                      style: TextStyle(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryText,
                                                       ),
-                                                    ],
+                                                    ),
+                                                    duration: Duration(
+                                                        milliseconds: 4000),
+                                                    backgroundColor:
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .secondary,
+                                                  ),
+                                                );
+                                                if (_shouldSetState)
+                                                  safeSetState(() {});
+                                                return;
+                                              } else {
+                                                if (FFAppState().orderAddress ==
+                                                        null ||
+                                                    FFAppState().orderAddress ==
+                                                        '') {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                        'Укажите адрес на главной',
+                                                        style: TextStyle(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryText,
+                                                        ),
+                                                      ),
+                                                      duration: Duration(
+                                                          milliseconds: 4000),
+                                                      backgroundColor:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .secondary,
+                                                    ),
                                                   );
-                                                },
-                                              );
+                                                  context.safePop();
+                                                  if (_shouldSetState)
+                                                    safeSetState(() {});
+                                                  return;
+                                                } else {
+                                                  _model.theOrderRow =
+                                                      await OrdersTable()
+                                                          .insert({
+                                                    'customer_profile':
+                                                        currentUserUid,
+                                                    'date_of_service': supaSerialize<
+                                                        DateTime>(FFAppState()
+                                                            .aFutureOrder
+                                                        ? FFAppState()
+                                                            .datePicked
+                                                        : getCurrentTimestamp),
+                                                    'for_thirdparty': FFAppState()
+                                                                    .nameOfThirdParty !=
+                                                                null &&
+                                                            FFAppState()
+                                                                    .nameOfThirdParty !=
+                                                                ''
+                                                        ? true
+                                                        : false,
+                                                    'orderStatus': OrderStatus
+                                                        .Created.name,
+                                                    'paymentStatus':
+                                                        PaymentStatus
+                                                            .Expecting.name,
+                                                    'assignment_status':
+                                                        AssignmentStatus
+                                                            .NotAssigned.name,
+                                                    'total_Cost': functions
+                                                        .orderTotal(FFAppState()
+                                                            .TheProductList
+                                                            .toList()),
+                                                    'address':
+                                                        'orderAddress ${FFAppState().addressDetails}',
+                                                    'city': FFAppState().city,
+                                                    'latitude':
+                                                        FFAppState().orderLat,
+                                                    'longitude':
+                                                        FFAppState().orderLng,
+                                                    'third_pary_name':
+                                                        FFAppState()
+                                                            .nameOfThirdParty,
+                                                    'third_pary_number':
+                                                        FFAppState()
+                                                            .NumberOfThirdParty,
+                                                  });
+                                                  _shouldSetState = true;
+                                                  await actions
+                                                      .insertAllProductsToUnitDetails(
+                                                    _model.theOrderRow!.id,
+                                                  );
+                                                  await showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (alertDialogContext) {
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                            ' заказ оформлен!'),
+                                                        content: Text(
+                                                            'Ваш заказ успешно оформлен!'),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    alertDialogContext),
+                                                            child: Text('Ok'),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                  FFAppState().activeOrderId =
+                                                      _model.theOrderRow!.id;
+                                                  FFAppState().activeMasterId =
+                                                      0;
+                                                  FFAppState().aFutureOrder =
+                                                      false;
+                                                  FFAppState().addressDetails =
+                                                      ' ';
+                                                  FFAppState().TheProductList =
+                                                      [];
+                                                  FFAppState().whatProductList =
+                                                      [];
+                                                  safeSetState(() {});
+                                                  if (Navigator.of(context)
+                                                      .canPop()) {
+                                                    context.pop();
+                                                  }
+                                                  context.pushNamed(
+                                                      MapPageWidget.routeName);
+                                                }
+                                              }
 
-                                              context.pushNamed(
-                                                  MapPageWidget.routeName);
-
-                                              safeSetState(() {});
+                                              if (_shouldSetState)
+                                                safeSetState(() {});
                                             },
                                             text: 'Заказать · ${formatNumber(
                                               functions.orderTotal(FFAppState()

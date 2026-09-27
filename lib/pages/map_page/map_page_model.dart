@@ -32,12 +32,16 @@ class MapPageModel extends FlutterFlowModel<MapPageWidget> {
 
   // Stores action output result for [Custom Action - getMyLocation] action in MapPage widget.
   List<double>? myLocation;
+  // Stores action output result for [Custom Action - reverseGeocode] action in MapPage widget.
+  List<String>? gpsGeo;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode;
   TextEditingController? textController;
   String? Function(BuildContext, String?)? textControllerValidator;
   // Stores action output result for [Custom Action - geocodeAddress] action in TextField widget.
   List<double>? geoResult;
+  // Stores action output result for [Custom Action - reverseGeocode] action in TextField widget.
+  List<String>? geo;
 
   @override
   void initState(BuildContext context) {}

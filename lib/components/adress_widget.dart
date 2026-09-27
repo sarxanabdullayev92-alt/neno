@@ -497,7 +497,12 @@ class _AdressWidgetState extends State<AdressWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 1.0, 0.0, 5.0),
                     child: FFButtonWidget(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        FFAppState().addressDetails =
+                            'подъезд ${_model.textController1.text},этаж ${_model.textController2.text},кв. ${_model.textController3.text},${_model.textController4.text}';
+                        safeSetState(() {});
+                        context.safePop();
+                      },
                       text: 'Сохранить',
                       options: FFButtonOptions(
                         width: 159.1,

@@ -3,10 +3,10 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/parametr_carpet/cotton_wool/cotton_wool_widget.dart';
-import '/parametr_carpet/kovrolin/kovrolin_widget.dart';
-import '/parametr_carpet/long_pile/long_pile_widget.dart';
-import '/parametr_carpet/sinthetics/sinthetics_widget.dart';
+import '/parametr_curtains/curtains/curtains_widget.dart';
+import '/parametr_curtains/lambrequin/lambrequin_widget.dart';
+import '/parametr_curtains/roman_curtain/roman_curtain_widget.dart';
+import '/parametr_curtains/tulle/tulle_widget.dart';
 import 'dart:ui';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
@@ -183,9 +183,7 @@ class _SelectCurtainsOptionsWidgetState
                                 builder: (context) {
                                   return Padding(
                                     padding: MediaQuery.viewInsetsOf(context),
-                                    child: KovrolinWidget(
-                                      productType: 'Шторы',
-                                    ),
+                                    child: CurtainsWidget(),
                                   );
                                 },
                               ).then((value) => safeSetState(() {}));
@@ -302,9 +300,7 @@ class _SelectCurtainsOptionsWidgetState
                                 builder: (context) {
                                   return Padding(
                                     padding: MediaQuery.viewInsetsOf(context),
-                                    child: SintheticsWidget(
-                                      productType: 'Римская штора',
-                                    ),
+                                    child: RomanCurtainWidget(),
                                   );
                                 },
                               ).then((value) => safeSetState(() {}));
@@ -421,9 +417,7 @@ class _SelectCurtainsOptionsWidgetState
                                 builder: (context) {
                                   return Padding(
                                     padding: MediaQuery.viewInsetsOf(context),
-                                    child: CottonWoolWidget(
-                                      productType: 'Ламбрекен',
-                                    ),
+                                    child: LambrequinWidget(),
                                   );
                                 },
                               ).then((value) => safeSetState(() {}));
@@ -539,9 +533,7 @@ class _SelectCurtainsOptionsWidgetState
                                 builder: (context) {
                                   return Padding(
                                     padding: MediaQuery.viewInsetsOf(context),
-                                    child: LongPileWidget(
-                                      productType: 'Тюль',
-                                    ),
+                                    child: TulleWidget(),
                                   );
                                 },
                               ).then((value) => safeSetState(() {}));

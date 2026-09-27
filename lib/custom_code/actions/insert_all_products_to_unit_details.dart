@@ -10,17 +10,30 @@ import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-Future insertAllProductsToUnitDetails() async {
-  final list = FFAppState().TheProductList;
+Future<bool?> insertAllProductsToUnitDetails(int orderId) async {
+  final rows = FFAppState()
+      .TheProductList
+      .where((item) =>
+          item.quantity > 0 &&
+          item.productType.isNotEmpty &&
+          item.productType != 'Hello World')
+      .map((item) => {
+            'order_id': orderId,
+            'unitMeasure': item.measurement,
+            'price': item.costper1,
+            'quantity': item.quantity,
+            'productType': item.productType,
+            'productName': item.productName,
+          })
+      .toList();
 
-  for (final item in list) {
-    await SupaFlow.client.from('unitdetails').insert({
-      'unitMeasure': item.measurement,
-      'price': item.costper1,
-      'quantity': item.quantity,
-      'productType': item.productType,
-      'productName': item.productName,
-    });
+  if (rows.isEmpty) return true;
+
+  try {
+    await SupaFlow.client.from('unitdetails').insert(rows);
+    return true;
+  } catch (_) {
+    return false;
   }
 }
 

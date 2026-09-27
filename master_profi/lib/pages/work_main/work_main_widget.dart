@@ -45,7 +45,9 @@ class _WorkMainWidgetState extends State<WorkMainWidget> {
           FFAppState().myMasterId,
         ),
       );
-      if (_model.masterRow != null && (_model.masterRow)!.isNotEmpty) {
+      if ((_model.masterRow != null && (_model.masterRow)!.isNotEmpty) &&
+          (_model.masterRow?.firstOrNull?.city != null &&
+              _model.masterRow?.firstOrNull?.city != '')) {
         FFAppState().city = _model.masterRow!.firstOrNull!.city!;
         safeSetState(() {});
       }
